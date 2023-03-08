@@ -1,0 +1,12 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Jars4Java3D\\j3dcore.jar",
+        "c:\\Jars4Java3D\\j3dexamples.jar",
+        "c:\\Jars4Java3D\\j3dutils.jar",
+        "c:\\Jars4Java3D\\jogamp-fat.jar",
+        "c:\\Jars4Java3D\\vecmath.jar"
+    ]
+}
