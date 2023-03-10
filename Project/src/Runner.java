@@ -15,8 +15,18 @@ public class Runner extends JPanel {
 	/* a function to build the content branch */
 	public static BranchGroup create_Scene() {
 		BranchGroup sceneBG = new BranchGroup(); // create the scene' BranchGroup
-		sceneBG.addChild(createBackground("src/blackback.jpg"));
+		sceneBG.addChild(createBackground("img/blackback.jpg"));
+		sceneBG.addChild(create_objects());
 		return sceneBG;
+	}
+	
+	public static Objects[] object3D = new Objects[1];
+
+	public static TransformGroup create_objects(){
+		TransformGroup objTG = new TransformGroup();
+		object3D[0] = new Sphere();
+		objTG.addChild(object3D[0].position_Object());
+		return objTG;
 	}
 
 	public Runner(BranchGroup sceneBG) {
@@ -28,6 +38,7 @@ public class Runner extends JPanel {
 
 		sceneBG.addChild(Commons.key_Navigation(su)); // allow key navigation
 		sceneBG.compile(); // optimize the BranchGroup
+		
 		su.addBranchGraph(sceneBG); // attach the scene to SimpleUniverse
 
 		setLayout(new BorderLayout());

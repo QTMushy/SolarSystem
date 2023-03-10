@@ -26,7 +26,7 @@ public abstract class Objects  {
 		ObjectFile f = new ObjectFile(ObjectFile.RESIZE, (float) (60 * Math.PI / 180.0));
 		Scene s = null;
 		try {                                              // load object's definition file to 's'
-			s = f.load( obj_name + ".obj");
+			s = f.load("Obj/" + obj_name + ".obj");
 		} catch (FileNotFoundException e) {
 			System.err.println(e);
 			System.exit(1);
@@ -73,180 +73,27 @@ public abstract class Objects  {
 	}	
 }
 
-class StandObjectA extends Objects {
-	public StandObjectA() {
-		scale = 1d;                                        // use to scale up/down original size
-		post = new Vector3f(0f, 0f, 0f);                   // use to move object for positioning
-		transform_Object("FanStand");                      // set transformation to 'objTG' and load object file
-		mtl_clr[1] = new Color3f(0.58f, 0.69f, 0.11f);     // set "FanStand" to a different color than the common  		                                              
-		obj_Appearance();                                  // set appearance after converting object node to Shape3D
+class Sphere extends Objects {
+	
+	public Sphere() {
+		scale = 1d;
+		post = new Vector3f(0f, 0f, 0f);
+		transform_Object("sphere");
+		mtl_clr[1] = new Color3f(Commons.Yellow);
+		obj_Appearance();
 	}
-
-	public TransformGroup position_Object() {              // attach object BranchGroup "FanStand" to 'objTG'
-		Transform3D r_axis = new Transform3D();            // default: rotate around Y-axis
-		r_axis.rotY(Math.PI);                              // rotate around y-axis for 180 degrees
-		objRG = new TransformGroup(r_axis);                // allow "FanBlades" to rotate
-		objTG.addChild(objRG);                             // position "FanStand" by attaching 'objRG' to 'objTG'
-		objRG.addChild(objBG);                             // rotate "FanStand" by attaching 'objBG' to 'objRG'
-		return objTG;                                      
-	}
-
-	public void add_Child(TransformGroup nextTG) {
-		objRG.addChild(nextTG);                            // attach the next transformGroup to 'objTG'
-	}
-}
-
-class SwitchObjectA extends Objects {
-	public SwitchObjectA() {
-		scale = 0.3d;                                      // actual scale is 0.3 = 1.0 x 0.3
-		post = new Vector3f(0.02f, -0.77f, -0.8f);         // location to connect "FanSwitch" with "FanStand"
-		transform_Object("FanSwitch");                     // set transformation to 'objTG' and load object file
-		obj_Appearance();                                  // set appearance after converting object node to Shape3D
-	}
-
+	
 	public TransformGroup position_Object() {
-		objTG.addChild(objBG);                             // attach "FanSwitch" to 'objTG'
-		return objTG;                                      // use 'objTG' to attach "FanSwitch" to the previous TG
-	}
-
-	public void add_Child(TransformGroup nextTG) {
-		objTG.addChild(nextTG);                            // attach the next transformGroup to 'objTG'
-	}
-}
-class Shaft extends Objects {
-	public Shaft() {
-		scale = 0.18d;                                      // actual scale is 0.3 = 1.0 x 0.3
-		post = new Vector3f(0.0f, 1f, -0.58f);         // location to connect "FanShaft" with "FanStand"
-		transform_Object("FanShaft"); 
-		mtl_clr[1] = new Color3f(Commons.Red);                     // set transformation to 'objTG' and load object file
-		obj_Appearance();                                  // set appearance after converting object node to Shape3D
-	}
-
-	public TransformGroup position_Object() {
-		objTG.addChild(objBG);                             // attach "FanShaft" to 'objTG'
-		return objTG;                                      // use 'objTG' to attach "FanShaft" to the previous TG
-	}
-
-	public void add_Child(TransformGroup nextTG) {
-		objTG.addChild(nextTG);                            // attach the next transformGroup to 'objTG'
-	}
-}
-
-class Motor extends Objects {
-	public Motor() {
-		scale = 3.5d;                                      // actual scale is 0.3 = 1.0 x 0.3
-		post = new Vector3f(0.02f, 2.5f, 0.55f);
-		transform_Object("FanMotor"); 
-	                     // set transformation to 'objTG' and load object file
-		obj_Appearance();                                  // set appearance after converting object node to Shape3D
-	}
-
-	public TransformGroup position_Object() {
-		Transform3D rotate = new Transform3D();
-        rotate.rotX(Math.PI);
-        objRG = new TransformGroup(rotate);
-        objRG.addChild(objBG);
-        objTG.addChild(objRG); // attach "FanMotor" to 'objTG'
-        return objTG; // use 'objTG' to attach "FanSwitch" to the previous TG                                  // use 'objTG' to attach "FanShaft" to the previous TG
-	}
-
-	public void add_Child(TransformGroup nextTG) {
-		objTG.addChild(nextTG);                            // attach the next transformGroup to 'objTG'
-	}
-}
-
-class Shaft2 extends Objects {
-	public Shaft2() {
-		scale = 0.18d;                                      // actual scale is 0.3 = 1.0 x 0.3
-		post = new Vector3f(0.0f, 0f, 1.1f);         // location to connect "FanShaft" with "FanStand"
-		transform_Object("FanShaft"); 
-		mtl_clr[1] = new Color3f(Commons.White);                     // set transformation to 'objTG' and load object file
-		obj_Appearance();                                  // set appearance after converting object node to Shape3D
-	}
-
-	public TransformGroup position_Object() {
-		Transform3D rotate = new Transform3D();
-        rotate.rotY(Math.PI/2);
-        objRG = new TransformGroup(rotate);
-        objRG.addChild(objBG);
-        objTG.addChild(objRG); // attach "FanMotor" to 'objTG'
-        return objTG;                                    // use 'objTG' to attach "FanShaft" to the previous TG
-	}
-
-	public void add_Child(TransformGroup nextTG) {
-		objTG.addChild(nextTG);                            // attach the next transformGroup to 'objTG'
-	}
-}
-
-class Blades extends Objects {
-	public Blades() {
-		scale = 2.9d;                                      // actual scale is 0.3 = 1.0 x 0.3
-		post = new Vector3f(0.0f, 0f, 1.4f);         // location to connect "FanShaft" with "FanStand"
-		transform_Object("FanBlades"); 
-		mtl_clr[1] = new Color3f(Commons.Yellow);                     // set transformation to 'objTG' and load object file
-		obj_Appearance();                                  // set appearance after converting object node to Shape3D
-	}
-
-	public TransformGroup position_Object() {
-		Transform3D rotate = new Transform3D();
-		rotate.rotX(Math.PI);
-		objRG = new TransformGroup(rotate);
-		objRG.addChild(objBG);
-		objTG.addChild(objRG); // attach "FanMotor" to 'objTG'
-		return objTG;                                    // use 'objTG' to attach "FanShaft" to the previous TG
-	}
-
-	public void add_Child(TransformGroup nextTG) {
-		objTG.addChild(nextTG);                            // attach the next transformGroup to 'objTG'
-	}
-}
-
-class GuardA extends Objects {
-	public GuardA() {
-		scale = 3.3d;                                      // actual scale is 0.3 = 1.0 x 0.3
-		post = new Vector3f(0.0f, 0f, 1.4f);         // location to connect "FanShaft" with "FanStand"
-		transform_Object("Guard"); 
-		mtl_clr[1] = new Color3f(Commons.Yellow);                     // set transformation to 'objTG' and load object file
-		obj_Appearance();                                  // set appearance after converting object node to Shape3D
-	}
-
-	public TransformGroup position_Object() {
-		Transform3D rotate = new Transform3D();
-		rotate.rotX(Math.PI);
 		objRG = new TransformGroup();
-		objRG.addChild(objBG);
-		objTG.addChild(objRG); // attach "FanMotor" to 'objTG'
-		return objTG;                                    // use 'objTG' to attach "FanShaft" to the previous TG
+		objRG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+		objRG.addChild(objTG);
+		objTG.addChild(objBG);
+		return objRG;
 	}
-
+	
 	public void add_Child(TransformGroup nextTG) {
-		objTG.addChild(nextTG);                            // attach the next transformGroup to 'objTG'
+		objRG.addChild(nextTG);
 	}
 }
-
-
-class GuardB extends Objects {
-	public GuardB() {
-		scale = 3.3d;                                      // actual scale is 0.3 = 1.0 x 0.3
-		post = new Vector3f(0.0f, 0f, 1.4f);         // location to connect "FanShaft" with "FanStand"
-		transform_Object("Guard2"); 
-		mtl_clr[1] = new Color3f(Commons.Yellow);                     // set transformation to 'objTG' and load object file
-		obj_Appearance();                                  // set appearance after converting object node to Shape3D
-	}
-
-	public TransformGroup position_Object() {
-		Transform3D rotate = new Transform3D();
-		rotate.rotX(Math.PI);
-		objRG = new TransformGroup();
-		objRG.addChild(objBG);
-		objTG.addChild(objRG); // attach "FanMotor" to 'objTG'
-		return objTG;                                    // use 'objTG' to attach "FanShaft" to the previous TG
-	}
-
-	public void add_Child(TransformGroup nextTG) {
-		objTG.addChild(nextTG);                            // attach the next transformGroup to 'objTG'
-	}
-}
-
 
 
