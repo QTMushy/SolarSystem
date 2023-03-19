@@ -61,7 +61,31 @@ public class Commons extends JPanel {
 		app.setMaterial(mtl);                              // set appearance's material
 		return app;
 	}	
-	
+	public static RotationInterpolator rotationInterpolator(int rotationNumber, TransformGroup tg, char option,
+			Point3d pos) {
+		tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+		Transform3D axis = new Transform3D();
+		switch (option) {
+		case 'x':
+			axis.rotX(Math.PI / 2);
+			break;
+		case 'z':
+			axis.rotZ(Math.PI / 2);
+			break;
+		default:
+			/// case Y
+			axis.rotY(Math.PI / 2);
+			break;
+		}
+
+		Alpha a = new Alpha(-1, rotationNumber);// declaring alpha
+		RotationInterpolator rot = new RotationInterpolator(a, tg, axis, 0.0f, (float) Math.PI * 2);
+		rot.setSchedulingBounds(new BoundingSphere(pos, 100));// setting the bounds
+		return rot;// returning the rotation factor
+	}
+
+
+
 	/* a function to create a rotation behavior and refer it to 'my_TG' */
 	public static RotationInterpolator rotate_Behavior(int r_num, TransformGroup rotTG) {
 
