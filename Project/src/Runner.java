@@ -50,6 +50,12 @@ public class Runner extends JPanel {
 		sc2.setTranslation(earth);
 		sc2.setScale(0.5f);
 
+		Transform3D sc6 = new Transform3D();
+		Vector3f mars = new Vector3f(1.05f, 0, 9.5f);
+		sc6.setTranslation(mars);
+		sc6.setScale(0.4f);
+
+
 		// Transform3D sc3 = new Transform3D();
 		// Vector3f moon = new Vector3f(0, 1.05f, 1.05f);
 		// sc3.setTranslation(moon);
@@ -96,6 +102,18 @@ public class Runner extends JPanel {
 		sunTG.addChild(earthTG);
 		rotationInterpolators[2] = Commons.rotationInterpolator(5000, earthROT, 'x', new Point3d(earth));
 		earthTG.addChild(rotationInterpolators[2]);
+
+		// Mars Sphere
+		TransformGroup marsTG = new TransformGroup(sc6);
+		TransformGroup marsROT = new TransformGroup();
+		object3D[5] = new Sphere("Mars");
+		marsROT.addChild(object3D[5].position_Object());
+		marsTG.addChild(marsROT);
+		sunTG.addChild(marsTG);
+		rotationInterpolators[5] = Commons.rotationInterpolator(5000, marsROT, 'x', new Point3d(mars));
+		marsTG.addChild(rotationInterpolators[5]);
+
+
 
 		/// Moon sphere
 		// TransformGroup moonTG = new TransformGroup(sc2);
