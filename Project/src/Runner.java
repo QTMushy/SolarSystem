@@ -21,28 +21,7 @@ public class Runner extends JPanel {
 		return sceneBG;
 	}
 
-	public static RotationInterpolator rotationInterpolator(int rotationNumber, TransformGroup tg, char option,
-			Point3d pos) {
-		tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-		Transform3D axis = new Transform3D();
-		switch (option) {
-		case 'x':
-			axis.rotX(Math.PI / 2);
-			break;
-		case 'z':
-			axis.rotZ(Math.PI / 2);
-			break;
-		default:
-			/// case Y
-			axis.rotY(Math.PI / 2);
-			break;
-		}
 
-		Alpha a = new Alpha(-1, rotationNumber);// declaring alpha
-		RotationInterpolator rot = new RotationInterpolator(a, tg, axis, 0.0f, (float) Math.PI * 2);
-		rot.setSchedulingBounds(new BoundingSphere(pos, 100));// setting the bounds
-		return rot;// returning the rotation factor
-	}
 
 	public static Objects[] object3D = new Objects[3];
 
@@ -69,7 +48,7 @@ public class Runner extends JPanel {
 		object3D[0] = new Sphere("Sun");
 		tg1.addChild(object3D[0].position_Object());// sun sphere
 		bg.addChild(tg1);
-		rotationInterpolators[0] = rotationInterpolator(10000, tg1, 'y', new Point3d(0, 0, 0));
+		rotationInterpolators[0] = Commons.rotationInterpolator(10000, tg1, 'y', new Point3d(0, 0, 0));
 		tg1.addChild(rotationInterpolators[0]);
 
 		/// second sphere
@@ -80,7 +59,7 @@ public class Runner extends JPanel {
 		tg2ROT.addChild(object3D[1].position_Object());
 		tg2.addChild(tg2ROT);
 		tg1.addChild(tg2);
-		rotationInterpolators[1] = rotationInterpolator(5000, tg2ROT, 'x', new Point3d(trans1));
+		rotationInterpolators[1] = Commons.rotationInterpolator(5000, tg2ROT, 'x', new Point3d(trans1));
 		tg2.addChild(rotationInterpolators[1]);
 
 		/// third sphere
@@ -90,7 +69,7 @@ public class Runner extends JPanel {
 		tg3ROT.addChild(object3D[2].position_Object());// moon sphere
 		tg3.addChild(tg3ROT);
 		tg2ROT.addChild(tg3);
-		rotationInterpolators[2] = rotationInterpolator(2500, tg3ROT, 'z', new Point3d(trans2));
+		rotationInterpolators[2] = Commons.rotationInterpolator(2500, tg3ROT, 'z', new Point3d(trans2));
 		tg3.addChild(rotationInterpolators[2]);
 		
 		//return objTG;
