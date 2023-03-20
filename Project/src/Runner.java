@@ -11,7 +11,7 @@ public class Runner extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private static JFrame frame;
-	private static RotationInterpolator[] rotationInterpolators = new RotationInterpolator[3];
+	private static RotationInterpolator[] rotationInterpolators = new RotationInterpolator[9];
 
 	/* a function to build the content branch */
 	public static BranchGroup create_Scene() {
@@ -23,7 +23,7 @@ public class Runner extends JPanel {
 
 
 
-	public static Objects[] object3D = new Objects[3];
+	public static Objects[] object3D = new Objects[8];
 
 	public static void create_objects(BranchGroup bg) {
 		// TransformGroup objTG = new TransformGroup();
@@ -33,44 +33,79 @@ public class Runner extends JPanel {
 		Transform3D sc1 = new Transform3D();
 		sc1.setScale(1.1f);
 
+
+
+		Transform3D sc4 = new Transform3D();
+		Vector3f mercury = new Vector3f(1.05f, 0f, 2f);
+		sc4.setTranslation(mercury);
+		sc4.setScale(0.3f);
+
+		Transform3D sc5 = new Transform3D();
+		Vector3f venus = new Vector3f(1.05f, 0f, 4.5f);
+		sc5.setTranslation(venus);
+		sc5.setScale(0.6f);
+
 		Transform3D sc2 = new Transform3D();
-		Vector3f trans1 = new Vector3f(1.05f, 0, 1.05f);
-		sc2.setTranslation(trans1);
+		Vector3f earth = new Vector3f(1.05f, 0, 7f);
+		sc2.setTranslation(earth);
 		sc2.setScale(0.5f);
 
-		Transform3D sc3 = new Transform3D();
-		Vector3f trans2 = new Vector3f(0, 1.05f, 1.05f);
-		sc3.setTranslation(trans2);
-		sc3.setScale(0.35f);
+		// Transform3D sc3 = new Transform3D();
+		// Vector3f moon = new Vector3f(0, 1.05f, 1.05f);
+		// sc3.setTranslation(moon);
+		// sc3.setScale(0.35f);
+
+
 
 		// sun and rotation behaviour
-		TransformGroup tg1 = new TransformGroup(sc1);
+		TransformGroup sunTG = new TransformGroup(sc1);
 		object3D[0] = new Sphere("Sun");
-		tg1.addChild(object3D[0].position_Object());// sun sphere
-		bg.addChild(tg1);
-		rotationInterpolators[0] = Commons.rotationInterpolator(10000, tg1, 'y', new Point3d(0, 0, 0));
-		tg1.addChild(rotationInterpolators[0]);
+		sunTG.addChild(object3D[0].position_Object());// sun sphere
+		bg.addChild(sunTG);
+		rotationInterpolators[0] = Commons.rotationInterpolator(10000, sunTG, 'y', new Point3d(0, 0, 0));
+		sunTG.addChild(rotationInterpolators[0]);
 
-		/// second sphere
+		// Mercuty Sphere
+		TransformGroup mercutyTG = new TransformGroup(sc4);
+		TransformGroup mercutyROT = new TransformGroup();
+		object3D[1] = new Sphere("Mercury");
+		mercutyROT.addChild(object3D[1].position_Object());
+		mercutyTG.addChild(mercutyROT);
+		sunTG.addChild(mercutyTG);
+		rotationInterpolators[1] = Commons.rotationInterpolator(2000, mercutyROT, 'x', new Point3d(mercury));
+		mercutyTG.addChild(rotationInterpolators[1]);
+
+		// Venus Sphere
+		TransformGroup venusTG = new TransformGroup(sc5);
+		TransformGroup venusROT = new TransformGroup();
+		object3D[4] = new Sphere("Venus");
+		venusROT.addChild(object3D[4].position_Object());
+		venusTG.addChild(venusROT);
+		sunTG.addChild(venusTG);
+		rotationInterpolators[4] = Commons.rotationInterpolator(3000, venusROT, 'x', new Point3d(venus));
+		venusTG.addChild(rotationInterpolators[4]);
+		
+
+		/// Earth sphere
 		/// reference frames
-		TransformGroup tg2 = new TransformGroup(sc2);
-		TransformGroup tg2ROT = new TransformGroup();
-		object3D[1] = new Sphere("Earth");
-		tg2ROT.addChild(object3D[1].position_Object());
-		tg2.addChild(tg2ROT);
-		tg1.addChild(tg2);
-		rotationInterpolators[1] = Commons.rotationInterpolator(5000, tg2ROT, 'x', new Point3d(trans1));
-		tg2.addChild(rotationInterpolators[1]);
+		TransformGroup earthTG = new TransformGroup(sc2);
+		TransformGroup earthROT = new TransformGroup();
+		object3D[2] = new Sphere("Earth");
+		earthROT.addChild(object3D[2].position_Object());
+		earthTG.addChild(earthROT);
+		sunTG.addChild(earthTG);
+		rotationInterpolators[2] = Commons.rotationInterpolator(5000, earthROT, 'x', new Point3d(earth));
+		earthTG.addChild(rotationInterpolators[2]);
 
-		/// third sphere
-		TransformGroup tg3 = new TransformGroup(sc2);
-		TransformGroup tg3ROT = new TransformGroup();
-		object3D[2] = new Sphere("Moon");
-		tg3ROT.addChild(object3D[2].position_Object());// moon sphere
-		tg3.addChild(tg3ROT);
-		tg2ROT.addChild(tg3);
-		rotationInterpolators[2] = Commons.rotationInterpolator(2500, tg3ROT, 'z', new Point3d(trans2));
-		tg3.addChild(rotationInterpolators[2]);
+		/// Moon sphere
+		// TransformGroup moonTG = new TransformGroup(sc2);
+		// TransformGroup moonROT = new TransformGroup();
+		// object3D[3] = new Sphere("Moon");
+		// moonROT.addChild(object3D[3].position_Object());// moon sphere
+		// moonTG.addChild(moonROT);
+		// earthROT.addChild(moonTG);
+		// rotationInterpolators[3] = Commons.rotationInterpolator(2500, moonROT, 'z', new Point3d(moon));
+		// moonTG.addChild(rotationInterpolators[3]);
 		
 		//return objTG;
 	}
