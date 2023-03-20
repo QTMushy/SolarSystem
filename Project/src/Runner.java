@@ -84,14 +84,14 @@ public class Runner extends JPanel {
 		tg2.addChild(rotationInterpolators[1]);
 
 		/// third sphere
-		TransformGroup tg3 = new TransformGroup(sc2);
-		TransformGroup tg3ROT = new TransformGroup();
-		object3D[2] = new Sphere("Moon");
-		tg3ROT.addChild(object3D[2].position_Object());// moon sphere
-		tg3.addChild(tg3ROT);
-		tg2ROT.addChild(tg3);
-		rotationInterpolators[2] = rotationInterpolator(2500, tg3ROT, 'z', new Point3d(trans2));
-		tg3.addChild(rotationInterpolators[2]);
+		// TransformGroup tg3 = new TransformGroup(sc2);
+		// TransformGroup tg3ROT = new TransformGroup();
+		// object3D[2] = new Sphere("Moon");
+		// tg3ROT.addChild(object3D[2].position_Object());// moon sphere
+		// tg3.addChild(tg3ROT);
+		// tg2ROT.addChild(tg3);
+		// rotationInterpolators[2] = rotationInterpolator(2500, tg3ROT, 'z', new Point3d(trans2));
+		// tg3.addChild(rotationInterpolators[2]);
 		
 		//return objTG;
 	}
