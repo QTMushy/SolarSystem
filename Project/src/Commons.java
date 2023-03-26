@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GraphicsConfiguration;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+import org.jogamp.vecmath.*;
 import org.jogamp.java3d.Alpha;
 import org.jogamp.java3d.Appearance;
 import org.jogamp.java3d.BoundingSphere;
@@ -82,6 +82,14 @@ public class Commons extends JPanel {
 		RotationInterpolator rot = new RotationInterpolator(a, tg, axis, 0.0f, (float) Math.PI * 2);
 		rot.setSchedulingBounds(new BoundingSphere(pos, 100));// setting the bounds
 		return rot;// returning the rotation factor
+	}
+
+	public static Transform3D createTransform(Vector3f translation, float scale){
+		Transform3D transform = new Transform3D();
+    	transform.setTranslation(translation);
+    	transform.setScale(scale);
+    	return transform;
+
 	}
 
 
