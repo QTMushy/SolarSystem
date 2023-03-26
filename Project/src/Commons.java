@@ -72,9 +72,10 @@ public class Commons extends JPanel {
 		case 'z':
 			axis.rotZ(Math.PI / 2);
 			break;
-		default:
-			/// case Y
+		case 'y':
 			axis.rotY(Math.PI / 2);
+			break;
+		default:
 			break;
 		}
 
@@ -99,6 +100,7 @@ public class Commons extends JPanel {
 
 		rotTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 		Transform3D yAxis = new Transform3D();
+		
 		Alpha rotationAlpha = new Alpha(-1, r_num);
 		RotationInterpolator rot_beh = new RotationInterpolator(
 				rotationAlpha, rotTG, yAxis, 0.0f, (float) Math.PI * 2.0f);

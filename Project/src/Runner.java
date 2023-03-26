@@ -8,6 +8,7 @@ import org.jogamp.java3d.utils.image.TextureLoader;
 import org.jogamp.java3d.utils.universe.SimpleUniverse;
 import org.jogamp.vecmath.*;
 
+
 public class Runner extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -17,8 +18,13 @@ public class Runner extends JPanel {
 	/* a function to build the content branch */
 	public static BranchGroup create_Scene() {
 		BranchGroup sceneBG = new BranchGroup(); // create the scene' BranchGroup
+		TransformGroup sceneTG = new TransformGroup(); 
 		sceneBG.addChild(createBackground("img/blackback.jpg"));
-		create_objects(sceneBG);
+		Spaceship spaceship = new Spaceship(); 
+		sceneTG.addChild(spaceship.position_Object());
+		//create_objects(sceneBG);
+		sceneBG.addChild(Commons.rotate_Behavior(7500, sceneTG));
+		sceneBG.addChild(sceneTG);
 		return sceneBG;
 	}
 
@@ -78,7 +84,7 @@ public class Runner extends JPanel {
 		mercutyROT.addChild(object3D[1].position_Object());
 		mercutyTG.addChild(mercutyROT);
 		sunTG.addChild(mercutyTG);
-		rotationInterpolators[1] = Commons.rotationInterpolator(2000, mercutyROT, 'x', new Point3d(mercuryVector));
+		rotationInterpolators[1] = null;
 		mercutyTG.addChild(rotationInterpolators[1]);
 
 		// Venus Sphere
@@ -100,7 +106,7 @@ public class Runner extends JPanel {
 		earthROT.addChild(object3D[2].position_Object());
 		earthTG.addChild(earthROT);
 		sunTG.addChild(earthTG);
-		rotationInterpolators[2] = Commons.rotationInterpolator(5000, earthROT, 'x', new Point3d(earthvVector));
+		rotationInterpolators[2] = null;
 		earthTG.addChild(rotationInterpolators[2]);
 
 		// Mars Sphere
