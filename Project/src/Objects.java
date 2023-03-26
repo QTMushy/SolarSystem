@@ -98,9 +98,9 @@ public abstract class Objects {
 
 class Sphere extends Objects {
 
-	public Sphere(String name) {
-		scale = 1d;
-		post = new Vector3f(0f, 0f, 0f);
+	public Sphere(String name, Vector3f pos, double scale) {
+		this.scale = scale;
+		this.post = pos;
 		transform_Object(name);
 		// mtl_clr[1] = new Color3f(Commons.Yellow);
 		// obj_Appearance();
@@ -141,5 +141,10 @@ class Sphere extends Objects {
 
 	public void add_Child(TransformGroup nextTG) {
 		objRG.addChild(nextTG);
+	}
+
+	public TransformGroup getRotationGroup()
+	{
+		return objRG;
 	}
 }
