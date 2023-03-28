@@ -172,6 +172,17 @@ class Spaceship extends Objects {
 		Transform3D scaler = new Transform3D();
 		scaler.setScale(scale); // set scale for the 4x4 matrix
 		scaler.setTranslation(post); // set translations for the 4x4 matrix
+		
+		Transform3D rotation = new Transform3D();
+		Transform3D temp = new Transform3D();
+
+		// 50 20 
+		rotation.rotY(-3f);
+		temp.rotX(-89.5f);
+		rotation.mul(temp);
+		
+		scaler.mul(rotation);
+		
 		objTG = new TransformGroup(scaler); // set the translation BG with the 4x4 matrix
 		objBG = loadShape("temp").getSceneGroup(); // load external object to 'objBG'
 		obj_shape = (Shape3D) objBG.getChild(0); // get and cast the object to 'obj_shape'
@@ -203,6 +214,9 @@ class Spaceship extends Objects {
 	public TransformGroup position_Object() {
 		objRG = new TransformGroup();
 		objRG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+		
+		
+		
 		objRG.addChild(objTG);
 		objTG.addChild(objBG);
 		return objRG;
