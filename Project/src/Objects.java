@@ -61,14 +61,14 @@ public abstract class Objects {
 	 * function to set 'objTG' and attach object after loading the model from
 	 * external file
 	 */
-	protected void transform_Object(String obj_name) {
+	protected void transform_Object(String current_obj_name,String obj_name) {
 		Transform3D scaler = new Transform3D();
 		scaler.setScale(scale); // set scale for the 4x4 matrix
 		scaler.setTranslation(post); // set translations for the 4x4 matrix
 		objTG = new TransformGroup(scaler); // set the translation BG with the 4x4 matrix
-		objBG = loadShape("sphere").getSceneGroup(); // load external object to 'objBG'
+		objBG = loadShape(obj_name).getSceneGroup(); // load external object to 'objBG'
 		obj_shape = (Shape3D) objBG.getChild(0); // get and cast the object to 'obj_shape'
-		obj_shape.setName(obj_name); // use the name to identify the object
+		obj_shape.setName(current_obj_name); // use the name to identify the object
 
 	}
 
@@ -101,7 +101,7 @@ class Sphere extends Objects {
 	public Sphere(String name, Vector3f pos, double scale) {
 		this.scale = scale;
 		this.post = pos;
-		transform_Object(name);
+		transform_Object(name,"sphere");
 		// mtl_clr[1] = new Color3f(Commons.Yellow);
 		// obj_Appearance();
 
@@ -148,3 +148,33 @@ class Sphere extends Objects {
 		return objRG;
 	}
 }
+
+class saturn_rings extends Objects{
+
+	public saturn_rings(String name, Vector3f pos, double scale) {
+		this.scale = scale;
+		this.post = pos;
+		transform_Object(name,"rings");
+		
+		Appearance sphereAppearance = new Appearance();// appearance for sphere
+		sphereAppearance.setTexture(texturedApp("img/" + name + ".jpg"));// default image as MarbleTexture
+		obj_shape.setAppearance(sphereAppearance);
+	}
+
+	@Override
+	public TransformGroup position_Object() {
+		objRG = new TransformGroup();
+		objRG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+		objRG.addChild(objTG);
+		objTG.addChild(objBG);
+		return objRG;
+	}
+
+	@Override
+	public void add_Child(TransformGroup nextTG) {
+		objRG.addChild(nextTG);
+	}
+	
+}
+
+
