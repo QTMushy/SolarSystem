@@ -30,42 +30,42 @@ public class Runner extends JPanel {
 	public static void create_objects(BranchGroup bg) {
 
 		TransformGroup SolarSystem = new TransformGroup();
-		TransformGroup sun = planets("sun", new Vector3f(0f,0f,0f), 0.3d,0);
-		sun.addChild(Commons.rotationInterpolator(1000,sun,'y',new Point3d(0f,0f,0f)));
+		TransformGroup sun = planets("sun", new Vector3f(0f,0f,0f), 2.3d,0);
+		sun.addChild(Commons.rotationInterpolator(100000,sun,'y',new Point3d(0f,0f,0f)));
 
-		TransformGroup mercury = planets("mercury", new Vector3f(0f,0f,.5f), 0.038d,1);
-		mercury.addChild(Commons.rotate_Behavior(100000,planets[1].getRotationGroup(), new Vector3f(0f,0f,.5f)));
-		mercury.addChild(Commons.rotationInterpolator(1000,mercury,'y',new Point3d(0f,0f,0.5f)));
+		TransformGroup mercury = planets("mercury", new Vector3f(0f,0f,2.5f), 0.038d,1);
+		mercury.addChild(Commons.rotate_Behavior(100000,planets[1].getRotationGroup(), new Vector3f(0f,0f,2.5f)));
+		mercury.addChild(Commons.rotationInterpolator(1000,mercury,'y',new Point3d(0f,0f,2.5f)));
 
-		TransformGroup venus = planets("venus", new Vector3f(0f,0f,.7f), 0.095d,2);
-		venus.addChild(Commons.rotate_Behavior(414778,planets[2].getRotationGroup(),new Vector3f(0f,0f,.7f)));
-		venus.addChild(Commons.rotationInterpolator(2555,venus,'y',new Point3d(0f,0f,0.7f)));
+		TransformGroup venus = planets("venus", new Vector3f(0f,0f,2.7f), 0.095d,2);
+		venus.addChild(Commons.rotate_Behavior(414778,planets[2].getRotationGroup(),new Vector3f(0f,0f,2.7f)));
+		venus.addChild(Commons.rotationInterpolator(2555,venus,'y',new Point3d(0f,0f,2.7f)));
 
-		TransformGroup earth = planets("earth", new Vector3f(0f,0f,0.9f), 0.1d,3);
-		earth.addChild(Commons.rotate_Behavior(1706,planets[3].getRotationGroup(),new Vector3f(0f,0f,.9f)));
-		earth.addChild(Commons.rotationInterpolator(4153,earth,'y',new Point3d(0f,0f,0.9f)));
+		TransformGroup earth = planets("earth", new Vector3f(0f,0f,2.9f), 0.1d,3);
+		earth.addChild(Commons.rotate_Behavior(1706,planets[3].getRotationGroup(),new Vector3f(0f,0f,2.9f)));
+		earth.addChild(Commons.rotationInterpolator(4153,earth,'y',new Point3d(0f,0f,2.9f)));
 
-		TransformGroup mars = planets("mars", new Vector3f(0f,0f,1.1f), 0.053d,4);
-		mars.addChild(Commons.rotate_Behavior(1758,planets[4].getRotationGroup(),new Vector3f(0f,0f,1.1f)));
-		mars.addChild(Commons.rotationInterpolator(7807,mars,'y',new Point3d(0f,0f,1.1f)));
+		TransformGroup mars = planets("mars", new Vector3f(0f,0f,3.1f), 0.053d,4);
+		mars.addChild(Commons.rotate_Behavior(1758,planets[4].getRotationGroup(),new Vector3f(0f,0f,3.1f)));
+		mars.addChild(Commons.rotationInterpolator(7807,mars,'y',new Point3d(0f,0f,3.1f)));
 
-		TransformGroup jupiter = planets("jupiter", new Vector3f(0f,0f,3.0f), 1.12d,5);
-		jupiter.addChild(Commons.rotate_Behavior(700,planets[5].getRotationGroup(),new Vector3f(0f,0f,3.0f)));
-		jupiter.addChild(Commons.rotationInterpolator(49256,jupiter,'y',new Point3d(0f,0f,3.0f)));
+		TransformGroup jupiter = planets("jupiter", new Vector3f(0f,0f,5.0f), 1.12d,5);
+		jupiter.addChild(Commons.rotate_Behavior(700,planets[5].getRotationGroup(),new Vector3f(0f,0f,5.0f)));
+		jupiter.addChild(Commons.rotationInterpolator(49256,jupiter,'y',new Point3d(0f,0f,5.0f)));
 
-		TransformGroup saturn = planets("saturn", new Vector3f(0f,0f,6.0f), 0.945d,6);
-		saturn.addChild(Commons.rotate_Behavior(768,planets[6].getRotationGroup(),new Vector3f(0f,0f,6.0f)));
-		saturn.addChild(Commons.rotationInterpolator(122295,saturn,'y',new Point3d(0f,0f,6.0f)));
+		TransformGroup saturn = planets("saturn", new Vector3f(0f,0f,8.0f), 0.945d,6);
+		saturn.addChild(Commons.rotate_Behavior(768,planets[6].getRotationGroup(),new Vector3f(0f,0f,8.0f)));
+		saturn.addChild(Commons.rotationInterpolator(122295,saturn,'y',new Point3d(0f,0f,8.0f)));
 		// add saturn's rings
-		saturn.addChild(new saturn_rings("rings", new Vector3f(0f,0f,6.0f), 1.1d).position_Object());
+		saturn.addChild(new saturn_rings("rings", new Vector3f(0f,0f,8.0f), 1.1d).position_Object());
 
-		TransformGroup uranus = planets("uranus", new Vector3f(0f,0f,9.0f), 0.4d,7);
-		uranus.addChild(Commons.rotate_Behavior(1229,planets[7].getRotationGroup(),new Vector3f(0f,0f,9.0f)));
-		uranus.addChild(Commons.rotationInterpolator(348945,uranus,'y',new Point3d(0f,0f,9.0f)));
+		TransformGroup uranus = planets("uranus", new Vector3f(0f,0f,11.0f), 0.4d,7);
+		uranus.addChild(Commons.rotate_Behavior(1229,planets[7].getRotationGroup(),new Vector3f(0f,0f,11.0f)));
+		uranus.addChild(Commons.rotationInterpolator(348945,uranus,'y',new Point3d(0f,0f,11.0f)));
 
-		TransformGroup neptune = planets("neptune", new Vector3f(0f,0f,12.0f), 0.38d,8);
-		neptune.addChild(Commons.rotate_Behavior(1143,planets[8].getRotationGroup(),new Vector3f(0f,0f,12.0f)));
-		neptune.addChild(Commons.rotationInterpolator(684226,neptune,'y',new Point3d(0f,0f,12.0f)));
+		TransformGroup neptune = planets("neptune", new Vector3f(0f,0f,14.0f), 0.38d,8);
+		neptune.addChild(Commons.rotate_Behavior(1143,planets[8].getRotationGroup(),new Vector3f(0f,0f,14.0f)));
+		neptune.addChild(Commons.rotationInterpolator(684226,neptune,'y',new Point3d(0f,0f,14.0f)));
 
 		SolarSystem.addChild(sun);
 		SolarSystem.addChild(mercury);
@@ -95,7 +95,7 @@ public class Runner extends JPanel {
 		
 
 		SimpleUniverse su = new SimpleUniverse(canvas); // create a SimpleUniverse
-		Commons.define_Viewer(su, new Point3d(1,10,0));
+		Commons.define_Viewer(su, new Point3d(5,3,2));
 		su.getViewer().getView().setBackClipDistance(1000000.0);
 		sceneBG.addChild(Commons.key_Navigation(su)); // allow key navigation
 		sceneBG.compile(); // optimize the BranchGroup
