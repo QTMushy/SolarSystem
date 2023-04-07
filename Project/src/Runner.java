@@ -518,7 +518,7 @@ public class Runner extends JPanel implements KeyListener {
 
 		float size = 0.042f;
 
-		TransparencyAttributes attr = new TransparencyAttributes(TransparencyAttributes.BLENDED, 1.0f);
+		TransparencyAttributes attr = new TransparencyAttributes(TransparencyAttributes.BLENDED, 0.0f);
 		ap.setTransparencyAttributes(attr);
 
 		// TextureLoader loader = new TextureLoader("model/transparent.png", this);
@@ -649,7 +649,7 @@ public class Runner extends JPanel implements KeyListener {
 			bball.setCollidable(false);
 			tg_2_b.addChild(bball);
 
-			tg_3_rs = new TransformGroup();
+			/*tg_3_rs = new TransformGroup();
 			t3d_3_rs = new Transform3D();
 
 			tg_3_rs.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -682,7 +682,7 @@ public class Runner extends JPanel implements KeyListener {
 
 			tg_2_r.addChild(tg_3_rs);
 			tg_2_b.addChild(tg_3_bs);
-
+*/
 			tg.addChild(tg_2_r);
 			tg.addChild(tg_2_b);
 
