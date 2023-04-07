@@ -253,16 +253,23 @@ public class Runner extends JPanel implements KeyListener {
 	}
 
 	public void keyTyped(KeyEvent e) {
+		
+	}
+
+	public void keyReleased(KeyEvent e) {
+	}
+
+	public void keyPressed(KeyEvent e) {
 		char key = e.getKeyChar();
 
-		if (key == 'd') {
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			t3dstep.set(new Vector3d(0.0, 1.0, 0.0));
 			tg.getTransform(t3d);
 			t3d.mul(t3dstep);
 			tg.setTransform(t3d);
 		}
 
-		if (key == 's') {
+		if (key == 'a') {
 
 			t3dstep.rotZ(Math.PI / 32);
 			tg.getTransform(t3d);
@@ -274,7 +281,7 @@ public class Runner extends JPanel implements KeyListener {
 
 		}
 
-		if (key == 'f') {
+		if (key == 'd') {
 
 			t3dstep.rotZ(-Math.PI / 32);
 			tg.getTransform(t3d);
@@ -286,7 +293,7 @@ public class Runner extends JPanel implements KeyListener {
 
 		}
 
-		if (key == 'e') {
+		if (key == 'w') {
 
 			t3dstep.rotX(Math.PI / 32);
 			tg.getTransform(t3d);
@@ -298,7 +305,7 @@ public class Runner extends JPanel implements KeyListener {
 
 		}
 
-		if (key == 'c') {
+		if (key == 's') {
 
 			t3dstep.rotX(-Math.PI / 32);
 			tg.getTransform(t3d);
@@ -310,12 +317,6 @@ public class Runner extends JPanel implements KeyListener {
 
 		}
 
-	}
-
-	public void keyReleased(KeyEvent e) {
-	}
-
-	public void keyPressed(KeyEvent e) {
 	}
 
 	public static void main(String[] args) {
