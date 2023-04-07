@@ -35,6 +35,7 @@ public class Runner extends JPanel implements KeyListener {
 	private static Canvas3D canvas = null;
 	public static TransparencyAttributes transAttr_r;
 	public static TransparencyAttributes transAttr_b;
+	public static TransparencyAttributes transAttr_sun;
 
 	private static Text2D text2d;
 	private static Text2D text2d_2;
@@ -43,6 +44,9 @@ public class Runner extends JPanel implements KeyListener {
 
 	public static boolean collision_r = false;
 	public static boolean collision_b = false;
+	public static boolean collision_sun = false;
+	
+	
 	private static TransformGroup tg_2 = null;
 	private static Transform3D t3d_2 = null;
 
@@ -518,8 +522,7 @@ public class Runner extends JPanel implements KeyListener {
 
 		float size = 0.042f;
 
-		TransparencyAttributes attr = new TransparencyAttributes(TransparencyAttributes.BLENDED, 0.0f);
-		ap.setTransparencyAttributes(attr);
+		
 
 		// TextureLoader loader = new TextureLoader("model/transparent.png", this);
 		// ap.setTexture(loader.getTexture());
@@ -535,13 +538,17 @@ public class Runner extends JPanel implements KeyListener {
 		quadA.setCoordinates(0, vertex);
 		Shape3D quad3Dr = new Shape3D(quadA, ap);
 		Shape3D quad3Db = new Shape3D(quadA, ap);
-
+		Shape3D quad3DSun = new Shape3D(quadA, ap);
+		
 		if (num == 1) {
 			tg.addChild(quad3Dr);
 			quad3Dr.setUserData(new String("red"));
 		} else if (num == 2) {
 			tg.addChild(quad3Db);
 			quad3Db.setUserData(new String("blue"));
+		} else if (num == 3) {
+			tg.addChild(quad3DSun);
+			quad3DSun.setUserData(new String("sun"));
 		}
 		root.addChild(tg);
 
@@ -575,25 +582,6 @@ public class Runner extends JPanel implements KeyListener {
 		public Transform3D t3d_2_r = null;
 		public TransformGroup tg_2_b = null;
 		public Transform3D t3d_2_b = null;
-
-		public TransformGroup tg_3_rs = null;
-		public Transform3D t3d_3_rs = null;
-
-		public TransformGroup tg_3_bs = null;
-		public Transform3D t3d_3_bs = null;
-
-		private double x_r = 0.0;
-		private double y_r = 0.0;
-		private double z_r = 0.0;
-
-		private double x_b = 0.0;
-		private double y_b = 0.0;
-		private double z_b = 0.0;
-
-		private double rball_height = 0.1516;
-		private double bball_height = 0.1516;
-
-		private int count_3 = 0;
 
 		private boolean done = false;
 
@@ -649,43 +637,38 @@ public class Runner extends JPanel implements KeyListener {
 			bball.setCollidable(false);
 			tg_2_b.addChild(bball);
 
-			/*tg_3_rs = new TransformGroup();
-			t3d_3_rs = new Transform3D();
+			
 
-			tg_3_rs.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-
-			t3d_3_rs.setTranslation(new Vector3d(0.1516, -0.1516, -0.0001));
-			tg_3_rs.setTransform(t3d_3_rs);
-
-			tg_3_bs = new TransformGroup();
-			t3d_3_bs = new Transform3D();
-
-			tg_3_bs.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-
-			t3d_3_bs.setTranslation(new Vector3d(0.1516, -0.1516, -0.0001));
-			tg_3_bs.setTransform(t3d_3_bs);
-
-			Appearance ap_black_r = createAppearance(new Color3f(0.0f, 0.0f, 0.0f));
-			Appearance ap_black_b = createAppearance(new Color3f(0.0f, 0.0f, 0.0f));
-
-			Cylinder rball_shdw = new Cylinder(0.05f, 0.0001f, ap_black_r);
-			Cylinder bball_shdw = new Cylinder(0.05f, 0.0001f, ap_black_b);
-
-			ap_black_r.setTransparencyAttributes(transAttr_r);
-			ap_black_b.setTransparencyAttributes(transAttr_b);
-
-			tg_3_rs.addChild(rball_shdw);
-			tg_3_bs.addChild(bball_shdw);
-
-			tg_3_rs.setCollidable(false);
-			tg_3_bs.setCollidable(false);
-
-			tg_2_r.addChild(tg_3_rs);
-			tg_2_b.addChild(tg_3_bs);
-*/
+			
+			
+			Appearance ap_sun = new Appearance();;
+			transAttr_sun = new TransparencyAttributes();
+			transAttr_sun.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+			//ap_sun.setTransparencyAttributes(transAttr_sun);
+			ap_sun.setTexture(texturedApp("img/Sun.jpg"));
+			PolygonAttributes polyAttrib = new PolygonAttributes();
+	        polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+	        ap_sun.setPolygonAttributes(polyAttrib);
+			Transform3D sc1 = new Transform3D();
+	        sc1.setScale(1.1f);
+	        
+	        TransformGroup sunTG = new TransformGroup(sc1);
+	        sunTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+	        int primflags = Primitive.GENERATE_NORMALS + Primitive.GENERATE_TEXTURE_COORDS;
+	        Sphere sun = new Sphere(0.05f, primflags, ap_sun);
+	        
+	        // I dont use Sphere from Objects.java because we dont have setCollidable
+			sunTG.addChild(createShape3D(3));
+			sun.setCollidable(false);
+			sunTG.addChild(sun);
+			
+			
+			
+			tg.addChild(sunTG);
 			tg.addChild(tg_2_r);
 			tg.addChild(tg_2_b);
-
+			
+			
 			BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 10000.0);
 			this.setSchedulingBounds(bounds);
 
@@ -706,7 +689,7 @@ public class Runner extends JPanel implements KeyListener {
 		public void processStimulus(Iterator<WakeupCriterion> arg0) {
 			// TODO Auto-generated method stub
 			if (!done) {
-				if (collision_r && collision_b) {
+				if (collision_r && collision_b && collision_sun) {
 					end = System.currentTimeMillis();
 					elapsed = end - start - delay;
 					done = true;
@@ -726,34 +709,45 @@ public class Runner extends JPanel implements KeyListener {
 				sec = (int) Math.floor(elapsed % 60000 / 1000);
 
 				if (min >= 2) {
-					System.out.println("GAME OVER");
+					//System.out.println("GAME OVER");
 					text2d.setString("GAME OVER");
 					text2d_2.setString("");
 
 				} else if ((min * 60 + sec) >= 70) {
 					str_min = String.valueOf(min);
 					str_sec = String.valueOf(sec);
-					System.out.println("0" + str_min + ":" + str_sec);
+					//System.out.println("0" + str_min + ":" + str_sec);
 					text2d_2.setString("0" + str_min + ":" + str_sec);
 
 				} else if ((min * 60 + sec) >= 60) {
 					str_min = String.valueOf(min);
 					str_sec = String.valueOf(sec);
 					text2d_2.setString("0" + str_min + ":0" + str_sec);
-					System.out.println("0" + str_min + ":0" + str_sec);
+					//System.out.println("0" + str_min + ":0" + str_sec);
 
 				} else if (sec >= 10) {
 					str_sec = String.valueOf(sec);
 					text2d_2.setString("00:" + str_sec);
-					System.out.println("00:" + str_min + ":0" + str_sec);
+					//System.out.println("00:" + str_min + ":0" + str_sec);
 				} else {
 					str_sec = String.valueOf(sec);
-					System.out.println("00:" + "0" + str_sec);
+					//System.out.println("00:" + "0" + str_sec);
 					text2d_2.setString("00:" + "0" + str_sec);
 				}
 			}
 
 			wakeupOn(wakeFrame);
+		}
+		
+		public static Texture texturedApp(String name) {
+			String filename = name;
+			TextureLoader loader = new TextureLoader(filename, null);
+			ImageComponent2D image = loader.getImage();
+			if (image == null)
+				System.out.println("File not found");
+			Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
+			texture.setImage(0, image);
+			return texture;
 		}
 	}
 

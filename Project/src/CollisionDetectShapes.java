@@ -93,6 +93,12 @@ public class CollisionDetectShapes extends Behavior {
 				Runner.collision_b = true;
 			}
 
+			if ((theLeaf.getUserData()).equals("sun")) {
+				System.out.println("colliding with Sun ball");
+
+				Runner.transAttr_sun.setTransparency(0.8f);
+				Runner.collision_sun = true;
+			}
 		} else {
 			wakeupOn(theCriteria[0]);
 		}
