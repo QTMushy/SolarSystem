@@ -49,6 +49,10 @@ public class CollisionDetectShapes extends Behavior {
 		wakeupOn(oredCriteria);
 	}
 	
+	public void processStimulus(Enumeration criteria) {
+
+	}
+
 	@Override
 	public void processStimulus(Iterator<WakeupCriterion> criteria) {
 		// TODO Auto-generated method stub
@@ -64,7 +68,7 @@ public class CollisionDetectShapes extends Behavior {
 			theLeaf = ((WakeupOnCollisionMovement) theCriterion).getTriggeringPath().getObject();
 
 		}
-		System.out.println("skdds");
+		System.out.println("processStimulus Iterator");
 		inCollision = !inCollision;
 		if (inCollision) {
 
@@ -75,17 +79,17 @@ public class CollisionDetectShapes extends Behavior {
 
 			wakeupOn(theCriteria[1]);
 
-			if ((node.getUserData()).equals("red")) {
+			if ((theLeaf.getUserData()).equals("red")) {
 				System.out.println("colliding with a red ball");
 
-				// transAttr_r.setTransparency(0.8f);
+				Runner.transAttr_r.setTransparency(0.8f);
 				// collision_r = true;
 			}
 
-			if ((node.getUserData()).equals("blue")) {
+			if ((theLeaf.getUserData()).equals("blue")) {
 				System.out.println("colliding with a blue ball");
 
-				// transAttr_b.setTransparency(0.8f);
+				Runner.transAttr_b.setTransparency(0.8f);
 				// collision_b = true;
 			}
 

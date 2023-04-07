@@ -31,8 +31,8 @@ public class Runner extends JPanel implements KeyListener {
 	private static TransformGroup viewtrans = null;
 	private static SimpleUniverse universe = null;
 	private static Canvas3D canvas = null;
-	private static TransparencyAttributes transAttr_r;
-	private static TransparencyAttributes transAttr_b;
+	public static TransparencyAttributes transAttr_r;
+	public static TransparencyAttributes transAttr_b;
 
 	private static Alpha alpha = null;
 
@@ -685,29 +685,29 @@ public class Runner extends JPanel implements KeyListener {
 				sec = (int) Math.floor(elapsed % 60000 / 1000);
 
 				if (min >= 2) {
-					System.out.println("GAME OVER");
+					//System.out.println("GAME OVER");
 					// text2d.setString("GAME OVER");
 					// text2d_2.setString("");
 
 				} else if ((min * 60 + sec) >= 70) {
 					str_min = String.valueOf(min);
 					str_sec = String.valueOf(sec);
-					System.out.println("0" + str_min + ":" + str_sec);
+					//System.out.println("0" + str_min + ":" + str_sec);
 					// text2d_2.setString("0" + str_min + ":" + str_sec);
 
 				} else if ((min * 60 + sec) >= 60) {
 					str_min = String.valueOf(min);
 					str_sec = String.valueOf(sec);
 					// text2d_2.setString("0" + str_min + ":0" + str_sec);
-					System.out.println("0" + str_min + ":0" + str_sec);
+					//System.out.println("0" + str_min + ":0" + str_sec);
 
 				} else if (sec >= 10) {
 					str_sec = String.valueOf(sec);
 					// text2d_2.setString("00:" + str_sec);
-					System.out.println("00:" + str_min + ":0" + str_sec);
+					//System.out.println("00:" + str_min + ":0" + str_sec);
 				} else {
 					str_sec = String.valueOf(sec);
-					System.out.println("00:" + "0" + str_sec);
+					//System.out.println("00:" + "0" + str_sec);
 					// text2d_2.setString("00:" + "0" + str_sec);
 				}
 			}
