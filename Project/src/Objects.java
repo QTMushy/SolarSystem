@@ -16,7 +16,7 @@ public abstract class Objects {
 	protected TransformGroup objRG; // use 'objRG' to rotate an object
 	protected double scale; // use 'scale' to define scaling
 	protected Vector3f post; // use 'post' to specify location
-	protected Shape3D obj_shape;
+	public Shape3D obj_shape;
 
 	public abstract TransformGroup position_Object(); // need to be defined in derived classes
 
