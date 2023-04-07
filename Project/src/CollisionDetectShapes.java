@@ -83,14 +83,14 @@ public class CollisionDetectShapes extends Behavior {
 				System.out.println("colliding with a red ball");
 
 				Runner.transAttr_r.setTransparency(0.8f);
-				// collision_r = true;
+				Runner.collision_r = true;
 			}
 
 			if ((theLeaf.getUserData()).equals("blue")) {
 				System.out.println("colliding with a blue ball");
 
 				Runner.transAttr_b.setTransparency(0.8f);
-				// collision_b = true;
+				Runner.collision_b = true;
 			}
 
 		} else {
