@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,6 +16,7 @@ import java.awt.event.KeyEvent;
 import org.jdesktop.j3d.examples.collision.Box;
 import org.jogamp.java3d.utils.geometry.Cylinder;
 import org.jogamp.java3d.utils.geometry.Sphere;
+import org.jogamp.java3d.utils.geometry.*;
 
 public class Runner extends JPanel implements KeyListener {
 
@@ -34,15 +36,52 @@ public class Runner extends JPanel implements KeyListener {
 	public static TransparencyAttributes transAttr_r;
 	public static TransparencyAttributes transAttr_b;
 
+	private static Text2D text2d;
+	private static Text2D text2d_2;
+
 	private static Alpha alpha = null;
 
-	private static boolean collision_r = false;
-	private static boolean collision_b = false;
+	public static boolean collision_r = false;
+	public static boolean collision_b = false;
 	private static TransformGroup tg_2 = null;
 	private static Transform3D t3d_2 = null;
 
 	private static CollisionDetectShapes cdGroup = null;
 	private static SoundUtilityJOAL soundJOAL;
+
+	private static BranchGroup createText2D() {
+
+		BranchGroup objRoot = new BranchGroup();
+
+		TransformGroup tg = new TransformGroup();
+		Transform3D t3d = new Transform3D();
+
+		TransformGroup tg_2 = new TransformGroup();
+		Transform3D t3d_2 = new Transform3D();
+
+		t3d.setTranslation(new Vector3d(0.2, 0.35, 0.0));
+		t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
+		t3d.setScale(1.0);
+		tg.setTransform(t3d);
+
+		t3d_2.setTranslation(new Vector3d(0.55, 0.35, 0.0));
+		t3d_2.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
+		t3d_2.setScale(1.0);
+		tg_2.setTransform(t3d_2);
+
+		text2d = new Text2D("", new Color3f(1.0f, 0.0f, 0.0f), "Helvetica", 24, Font.ITALIC);
+		text2d_2 = new Text2D("", new Color3f(0.0f, 0.0f, 0.8f), "Helvetica", 28, Font.ITALIC);
+
+		tg.addChild(text2d);
+		tg_2.addChild(text2d_2);
+		objRoot.addChild(tg);
+		objRoot.addChild(tg_2);
+
+		objRoot.compile();
+
+		return objRoot;
+
+	}
 
 	/* a function to build the content branch */
 	public static BranchGroup create_Scene() {
@@ -73,6 +112,7 @@ public class Runner extends JPanel implements KeyListener {
 
 		// objRoot.addChild(createText2D());
 		objRoot.addChild(createLight());
+		objRoot.addChild(createText2D());
 		return objRoot;
 
 		// create_objects(sceneBG);
@@ -253,71 +293,71 @@ public class Runner extends JPanel implements KeyListener {
 	}
 
 	public void keyTyped(KeyEvent e) {
-		
-	}
+        
+    }
 
-	public void keyReleased(KeyEvent e) {
-	}
+    public void keyReleased(KeyEvent e) {
+    }
 
-	public void keyPressed(KeyEvent e) {
-		char key = e.getKeyChar();
+    public void keyPressed(KeyEvent e) {
+        char key = e.getKeyChar();
 
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			t3dstep.set(new Vector3d(0.0, 1.0, 0.0));
-			tg.getTransform(t3d);
-			t3d.mul(t3dstep);
-			tg.setTransform(t3d);
-		}
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            t3dstep.set(new Vector3d(0.0, 1.0, 0.0));
+            tg.getTransform(t3d);
+            t3d.mul(t3dstep);
+            tg.setTransform(t3d);
+        }
 
-		if (key == 'a') {
+        if (key == 'a') {
 
-			t3dstep.rotZ(Math.PI / 32);
-			tg.getTransform(t3d);
-			t3d.get(matrix);
-			t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-			t3d.mul(t3dstep);
-			t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-			tg.setTransform(t3d);
+            t3dstep.rotZ(Math.PI / 32);
+            tg.getTransform(t3d);
+            t3d.get(matrix);
+            t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+            t3d.mul(t3dstep);
+            t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+            tg.setTransform(t3d);
 
-		}
+        }
 
-		if (key == 'd') {
+        if (key == 'd') {
 
-			t3dstep.rotZ(-Math.PI / 32);
-			tg.getTransform(t3d);
-			t3d.get(matrix);
-			t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-			t3d.mul(t3dstep);
-			t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-			tg.setTransform(t3d);
+            t3dstep.rotZ(-Math.PI / 32);
+            tg.getTransform(t3d);
+            t3d.get(matrix);
+            t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+            t3d.mul(t3dstep);
+            t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+            tg.setTransform(t3d);
 
-		}
+        }
 
-		if (key == 'w') {
+        if (key == 'w') {
 
-			t3dstep.rotX(Math.PI / 32);
-			tg.getTransform(t3d);
-			t3d.get(matrix);
-			t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-			t3d.mul(t3dstep);
-			t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-			tg.setTransform(t3d);
+            t3dstep.rotX(Math.PI / 32);
+            tg.getTransform(t3d);
+            t3d.get(matrix);
+            t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+            t3d.mul(t3dstep);
+            t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+            tg.setTransform(t3d);
 
-		}
+        }
 
-		if (key == 's') {
+        if (key == 's') {
 
-			t3dstep.rotX(-Math.PI / 32);
-			tg.getTransform(t3d);
-			t3d.get(matrix);
-			t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-			t3d.mul(t3dstep);
-			t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-			tg.setTransform(t3d);
+            t3dstep.rotX(-Math.PI / 32);
+            tg.getTransform(t3d);
+            t3d.get(matrix);
+            t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+            t3d.mul(t3dstep);
+            t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+            tg.setTransform(t3d);
 
-		}
+        }
 
-	}
+    }
 
 	public static void main(String[] args) {
 		frame = new JFrame("Solar System");
@@ -686,30 +726,30 @@ public class Runner extends JPanel implements KeyListener {
 				sec = (int) Math.floor(elapsed % 60000 / 1000);
 
 				if (min >= 2) {
-					//System.out.println("GAME OVER");
-					// text2d.setString("GAME OVER");
-					// text2d_2.setString("");
+					System.out.println("GAME OVER");
+					text2d.setString("GAME OVER");
+					text2d_2.setString("");
 
 				} else if ((min * 60 + sec) >= 70) {
 					str_min = String.valueOf(min);
 					str_sec = String.valueOf(sec);
-					//System.out.println("0" + str_min + ":" + str_sec);
-					// text2d_2.setString("0" + str_min + ":" + str_sec);
+					System.out.println("0" + str_min + ":" + str_sec);
+					text2d_2.setString("0" + str_min + ":" + str_sec);
 
 				} else if ((min * 60 + sec) >= 60) {
 					str_min = String.valueOf(min);
 					str_sec = String.valueOf(sec);
-					// text2d_2.setString("0" + str_min + ":0" + str_sec);
-					//System.out.println("0" + str_min + ":0" + str_sec);
+					text2d_2.setString("0" + str_min + ":0" + str_sec);
+					System.out.println("0" + str_min + ":0" + str_sec);
 
 				} else if (sec >= 10) {
 					str_sec = String.valueOf(sec);
-					// text2d_2.setString("00:" + str_sec);
-					//System.out.println("00:" + str_min + ":0" + str_sec);
+					text2d_2.setString("00:" + str_sec);
+					System.out.println("00:" + str_min + ":0" + str_sec);
 				} else {
 					str_sec = String.valueOf(sec);
-					//System.out.println("00:" + "0" + str_sec);
-					// text2d_2.setString("00:" + "0" + str_sec);
+					System.out.println("00:" + "0" + str_sec);
+					text2d_2.setString("00:" + "0" + str_sec);
 				}
 			}
 
