@@ -100,9 +100,9 @@ public class CollisionDetectShapes extends Behavior {
 				System.out.println("colliding with Sun ball");
 				Runner.playSound(2);
 				Runner.collision_sun = true;
-				Appearance app = Runner.sun.getAppearance();
+				Appearance app = Runner.planets[0].getAppearance();
 				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
-				Runner.sun.setAppearance(app);
+				Runner.planets[0].setAppearance(app);
 			}
 			
 			if ((theLeaf.getUserData()).equals("earth") && !Runner.collision_earth) {
@@ -110,10 +110,19 @@ public class CollisionDetectShapes extends Behavior {
 				Runner.playSound(2);
 				Runner.transAttr_earth.setTransparency(0.8f);
 				Runner.collision_earth = true;
-				Appearance app = Runner.sun.getAppearance();
+				Appearance app = Runner.planets[1].getAppearance();
 				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
-				//Runner.earth.setAppearance(app);
+				Runner.planets[1].setAppearance(app);
 				Runner.rotate2.getAlpha().pause();
+			}
+			
+			if ((theLeaf.getUserData()).equals("mercury") && !Runner.collision_mercury) {
+				System.out.println("colliding with mercury ball");
+				Runner.collision_mercury = true;
+				Appearance app = Runner.planets[2].getAppearance();
+				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
+				Runner.planets[2].setAppearance(app);
+				Runner.rotate3.getAlpha().pause();
 			}
 		} else {
 			wakeupOn(theCriteria[0]);

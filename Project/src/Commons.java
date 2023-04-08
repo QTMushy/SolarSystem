@@ -96,15 +96,15 @@ public class Commons extends JPanel {
 
 
 	/* a function to create a rotation behavior and refer it to 'my_TG' */
-	public static RotationInterpolator rotate_Behavior(int r_num, TransformGroup rotTG) {
+	public static RotationInterpolator rotate_Behavior(int r_num, TransformGroup rotTG, Vector3f translation) {
 
 		rotTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 		Transform3D yAxis = new Transform3D();
-		
+		yAxis.setTranslation(translation);
 		Alpha rotationAlpha = new Alpha(-1, r_num);
 		RotationInterpolator rot_beh = new RotationInterpolator(
 				rotationAlpha, rotTG, yAxis, 0.0f, (float) Math.PI * 2.0f);
-		rot_beh.setSchedulingBounds(hundredBS);
+		rot_beh.setSchedulingBounds(new BoundingSphere(new Point3d(),0));
 		return rot_beh;
 	}
 	
@@ -150,7 +150,7 @@ public class Commons extends JPanel {
 		BranchGroup sceneBG = new BranchGroup();
 		TransformGroup sceneTG = new TransformGroup();
 		sceneTG.addChild(new Box(0.5f, 0.5f, 0.5f, obj_Appearance(Orange) ));
-		sceneBG.addChild(rotate_Behavior(7500, sceneTG));
+		// sceneBG.addChild(rotate_Behavior(7500, sceneTG));
 		
 		sceneBG.addChild(sceneTG);
 		return sceneBG;
