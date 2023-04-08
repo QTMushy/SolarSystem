@@ -75,13 +75,14 @@ public class CollisionDetectShapes extends Behavior {
 		if (inCollision) {
 
 			// clip1 = getSound("sound/bell03.wav");
-			Runner.playSound(2);
+			
 			// clip1.setFramePosition(0);
 			// clip1.start();
 
 			wakeupOn(theCriteria[1]);
 
 			if ((theLeaf.getUserData()).equals("red")) {
+				Runner.playSound(2);
 				System.out.println("colliding with a red ball");
 
 				Runner.transAttr_r.setTransparency(0.8f);
@@ -90,14 +91,14 @@ public class CollisionDetectShapes extends Behavior {
 
 			if ((theLeaf.getUserData()).equals("blue")) {
 				System.out.println("colliding with a blue ball");
-
+				Runner.playSound(2);
 				Runner.transAttr_b.setTransparency(0.8f);
 				Runner.collision_b = true;
 			}
 
 			if ((theLeaf.getUserData()).equals("sun") && !Runner.collision_sun) {
 				System.out.println("colliding with Sun ball");
-
+				Runner.playSound(2);
 				Runner.collision_sun = true;
 				Appearance app = Runner.sun.getAppearance();
 				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
@@ -106,12 +107,12 @@ public class CollisionDetectShapes extends Behavior {
 			
 			if ((theLeaf.getUserData()).equals("earth") && !Runner.collision_earth) {
 				System.out.println("colliding with earth ball");
-
+				Runner.playSound(2);
 				Runner.transAttr_earth.setTransparency(0.8f);
 				Runner.collision_earth = true;
 				Appearance app = Runner.sun.getAppearance();
 				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
-				Runner.sun.setAppearance(app);
+				//Runner.earth.setAppearance(app);
 				Runner.rotate2.getAlpha().pause();
 			}
 		} else {
