@@ -836,7 +836,7 @@ public class Runner extends JPanel implements KeyListener {
 		public void processStimulus(Iterator<WakeupCriterion> arg0) {
 			// TODO Auto-generated method stub
 			if (!done) {
-				if (collision_r && collision_mercury && collision_sun && collision_earth) {
+				if (collision_mercury && collision_sun && collision_earth) {
 					end = System.currentTimeMillis();
 					elapsed = end - start - delay;
 					done = true;

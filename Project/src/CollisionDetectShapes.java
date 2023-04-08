@@ -118,6 +118,7 @@ public class CollisionDetectShapes extends Behavior {
 			
 			if ((theLeaf.getUserData()).equals("mercury") && !Runner.collision_mercury) {
 				System.out.println("colliding with mercury ball");
+				Runner.playSound(2);
 				Runner.collision_mercury = true;
 				Appearance app = Runner.planets[2].getAppearance();
 				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
