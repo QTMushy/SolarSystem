@@ -9,12 +9,14 @@ import org.jogamp.java3d.Appearance;
 import org.jogamp.java3d.Behavior;
 import org.jogamp.java3d.ColoringAttributes;
 import org.jogamp.java3d.Node;
+import org.jogamp.java3d.PolygonAttributes;
 import org.jogamp.java3d.Shape3D;
 import org.jogamp.java3d.WakeupCriterion;
 import org.jogamp.java3d.WakeupOnCollisionEntry;
 import org.jogamp.java3d.WakeupOnCollisionExit;
 import org.jogamp.java3d.WakeupOnCollisionMovement;
 import org.jogamp.java3d.WakeupOr;
+import org.jogamp.java3d.utils.geometry.Sphere;
 import org.jogamp.vecmath.Color3f;
 
 
@@ -96,8 +98,21 @@ public class CollisionDetectShapes extends Behavior {
 			if ((theLeaf.getUserData()).equals("sun")) {
 				System.out.println("colliding with Sun ball");
 
-				Runner.transAttr_sun.setTransparency(0.8f);
 				Runner.collision_sun = true;
+				//Appearance app = box.getAppearance();
+				Appearance test = Runner.sun.getAppearance();
+				test.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
+				//PolygonAttributes polyAttrib = new PolygonAttributes();
+    			//polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+    			//test.setPolygonAttributes(polyAttrib);
+				//Runner.sun.setAppearance(test);
+			}
+			
+			if ((theLeaf.getUserData()).equals("earth")) {
+				System.out.println("colliding with earth ball");
+
+				Runner.transAttr_earth.setTransparency(0.8f);
+				Runner.collision_earth = true;
 			}
 		} else {
 			wakeupOn(theCriteria[0]);

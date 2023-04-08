@@ -36,7 +36,10 @@ public class Runner extends JPanel implements KeyListener {
 	public static TransparencyAttributes transAttr_r;
 	public static TransparencyAttributes transAttr_b;
 	public static TransparencyAttributes transAttr_sun;
-
+	public static TransparencyAttributes transAttr_earth;
+	
+	
+	
 	private static Text2D text2d;
 	private static Text2D text2d_2;
 
@@ -45,7 +48,7 @@ public class Runner extends JPanel implements KeyListener {
 	public static boolean collision_r = false;
 	public static boolean collision_b = false;
 	public static boolean collision_sun = false;
-	
+	public static boolean collision_earth = false;
 	
 	private static TransformGroup tg_2 = null;
 	private static Transform3D t3d_2 = null;
@@ -53,6 +56,15 @@ public class Runner extends JPanel implements KeyListener {
 	private static CollisionDetectShapes cdGroup = null;
 	private static SoundUtilityJOAL soundJOAL;
 
+    private static RotationInterpolator rotate1;
+    private static RotationInterpolator rotate2;
+    
+    public static Sphere sun;
+    
+    
+    
+    
+    
 	private static BranchGroup createText2D() {
 
 		BranchGroup objRoot = new BranchGroup();
@@ -521,7 +533,8 @@ public class Runner extends JPanel implements KeyListener {
 		Appearance ap = new Appearance();
 
 		float size = 0.042f;
-
+		//TransparencyAttributes attr = new TransparencyAttributes(TransparencyAttributes.BLENDED, 1.0f);
+	     //ap.setTransparencyAttributes(attr);
 		
 
 		// TextureLoader loader = new TextureLoader("model/transparent.png", this);
@@ -539,6 +552,7 @@ public class Runner extends JPanel implements KeyListener {
 		Shape3D quad3Dr = new Shape3D(quadA, ap);
 		Shape3D quad3Db = new Shape3D(quadA, ap);
 		Shape3D quad3DSun = new Shape3D(quadA, ap);
+		Shape3D quad3DEarth = new Shape3D(quadA, ap);
 		
 		if (num == 1) {
 			tg.addChild(quad3Dr);
@@ -549,7 +563,11 @@ public class Runner extends JPanel implements KeyListener {
 		} else if (num == 3) {
 			tg.addChild(quad3DSun);
 			quad3DSun.setUserData(new String("sun"));
+		} else if (num == 4) {
+			tg.addChild(quad3DEarth);
+			quad3DEarth.setUserData(new String("earth"));
 		}
+		
 		root.addChild(tg);
 
 		root.compile();
@@ -641,29 +659,62 @@ public class Runner extends JPanel implements KeyListener {
 
 			
 			
-			Appearance ap_sun = new Appearance();;
-			transAttr_sun = new TransparencyAttributes();
+			Appearance ap_sun = new Appearance();
+			transAttr_sun = new TransparencyAttributes(mode, 0.0f);
 			transAttr_sun.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
-			//ap_sun.setTransparencyAttributes(transAttr_sun);
+			ap_sun.setTransparencyAttributes(transAttr_sun);
 			ap_sun.setTexture(texturedApp("img/Sun.jpg"));
 			PolygonAttributes polyAttrib = new PolygonAttributes();
-	        polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+			ap_sun.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
+			ap_sun.setCapability(Appearance.ALLOW_POLYGON_ATTRIBUTES_WRITE);
+			polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
 	        ap_sun.setPolygonAttributes(polyAttrib);
 			Transform3D sc1 = new Transform3D();
 	        sc1.setScale(1.1f);
 	        
 	        TransformGroup sunTG = new TransformGroup(sc1);
 	        sunTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-	        int primflags = Primitive.GENERATE_NORMALS + Primitive.GENERATE_TEXTURE_COORDS;
-	        Sphere sun = new Sphere(0.05f, primflags, ap_sun);
-	        
-	        // I dont use Sphere from Objects.java because we dont have setCollidable
+	        int primflags = Sphere.GENERATE_NORMALS + Primitive.GENERATE_TEXTURE_COORDS + Primitive.ENABLE_APPEARANCE_MODIFY;
+	        sun = new Sphere(0.05f, primflags, ap_sun);
+
+	        rotate1 = Commons.rotationInterpolator(10000, sunTG, 'y', new Point3d(0, 0, 0));
+
 			sunTG.addChild(createShape3D(3));
 			sun.setCollidable(false);
 			sunTG.addChild(sun);
+			sunTG.addChild(rotate1);
 			
 			
 			
+			
+			Appearance ap_earth = new Appearance();
+			transAttr_earth = new TransparencyAttributes();
+			transAttr_earth.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+			ap_earth.setTexture(texturedApp("img/Earth.jpg"));
+			polyAttrib = new PolygonAttributes();
+	        polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+	        ap_earth.setPolygonAttributes(polyAttrib);
+	        Transform3D sc2 = new Transform3D();
+	        Vector3f trans1 = new Vector3f(0.1f, 0, 0.1f);
+	        sc2.setTranslation(trans1);
+	        sc2.setScale(0.5f);
+	        
+	        
+	        TransformGroup earthTG = new TransformGroup(sc2);
+	        earthTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+	        Sphere earth = new Sphere(0.05f, primflags, ap_earth);
+	        TransformGroup earthTG_ROT = new TransformGroup();
+	        earthTG_ROT.addChild(earth);//earth sphere
+	        earthTG.addChild(earthTG_ROT);
+	        sunTG.addChild(earthTG);
+	        rotate2 = Commons.rotationInterpolator(5000, earthTG_ROT, 'x', new Point3d(trans1));
+	        earthTG.addChild(rotate2);	        
+
+	        earthTG_ROT.addChild(createShape3D(4));
+	        earth.setCollidable(false);
+			
+			
+			//tg.addChild(earthTG);
 			tg.addChild(sunTG);
 			tg.addChild(tg_2_r);
 			tg.addChild(tg_2_b);
@@ -689,7 +740,7 @@ public class Runner extends JPanel implements KeyListener {
 		public void processStimulus(Iterator<WakeupCriterion> arg0) {
 			// TODO Auto-generated method stub
 			if (!done) {
-				if (collision_r && collision_b && collision_sun) {
+				if (collision_r && collision_b && collision_sun && collision_earth) {
 					end = System.currentTimeMillis();
 					elapsed = end - start - delay;
 					done = true;
@@ -739,16 +790,7 @@ public class Runner extends JPanel implements KeyListener {
 			wakeupOn(wakeFrame);
 		}
 		
-		public static Texture texturedApp(String name) {
-			String filename = name;
-			TextureLoader loader = new TextureLoader(filename, null);
-			ImageComponent2D image = loader.getImage();
-			if (image == null)
-				System.out.println("File not found");
-			Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
-			texture.setImage(0, image);
-			return texture;
-		}
+		
 	}
 
 	/* for A5: a function to initialize for playing sound */
@@ -771,5 +813,16 @@ public class Runner extends JPanel implements KeyListener {
 		} catch (InterruptedException ex) {
 		}
 		soundJOAL.stop(snd_pt);
+	}
+	
+	public static Texture texturedApp(String name) {
+		String filename = name;
+		TextureLoader loader = new TextureLoader(filename, null);
+		ImageComponent2D image = loader.getImage();
+		if (image == null)
+			System.out.println("File not found");
+		Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
+		texture.setImage(0, image);
+		return texture;
 	}
 }
