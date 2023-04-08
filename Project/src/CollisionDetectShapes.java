@@ -95,24 +95,24 @@ public class CollisionDetectShapes extends Behavior {
 				Runner.collision_b = true;
 			}
 
-			if ((theLeaf.getUserData()).equals("sun")) {
+			if ((theLeaf.getUserData()).equals("sun") && !Runner.collision_sun) {
 				System.out.println("colliding with Sun ball");
 
 				Runner.collision_sun = true;
-				//Appearance app = box.getAppearance();
-				Appearance test = Runner.sun.getAppearance();
-				test.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
-				//PolygonAttributes polyAttrib = new PolygonAttributes();
-    			//polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
-    			//test.setPolygonAttributes(polyAttrib);
-				//Runner.sun.setAppearance(test);
+				Appearance app = Runner.sun.getAppearance();
+				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
+				Runner.sun.setAppearance(app);
 			}
 			
-			if ((theLeaf.getUserData()).equals("earth")) {
+			if ((theLeaf.getUserData()).equals("earth") && !Runner.collision_earth) {
 				System.out.println("colliding with earth ball");
 
 				Runner.transAttr_earth.setTransparency(0.8f);
 				Runner.collision_earth = true;
+				Appearance app = Runner.sun.getAppearance();
+				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
+				Runner.sun.setAppearance(app);
+				Runner.rotate2.getAlpha().pause();
 			}
 		} else {
 			wakeupOn(theCriteria[0]);

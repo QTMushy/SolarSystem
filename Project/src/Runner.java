@@ -56,8 +56,8 @@ public class Runner extends JPanel implements KeyListener {
 	private static CollisionDetectShapes cdGroup = null;
 	private static SoundUtilityJOAL soundJOAL;
 
-    private static RotationInterpolator rotate1;
-    private static RotationInterpolator rotate2;
+	public static RotationInterpolator rotate1;
+    public static RotationInterpolator rotate2;
     
     public static Sphere sun;
     
@@ -660,17 +660,15 @@ public class Runner extends JPanel implements KeyListener {
 			
 			
 			Appearance ap_sun = new Appearance();
-			transAttr_sun = new TransparencyAttributes(mode, 0.0f);
-			transAttr_sun.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
-			ap_sun.setTransparencyAttributes(transAttr_sun);
+			
 			ap_sun.setTexture(texturedApp("img/Sun.jpg"));
 			PolygonAttributes polyAttrib = new PolygonAttributes();
 			ap_sun.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
 			ap_sun.setCapability(Appearance.ALLOW_POLYGON_ATTRIBUTES_WRITE);
-			polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+			//polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
 	        ap_sun.setPolygonAttributes(polyAttrib);
 			Transform3D sc1 = new Transform3D();
-	        sc1.setScale(1.1f);
+	        sc1.setScale(1.4f);
 	        
 	        TransformGroup sunTG = new TransformGroup(sc1);
 	        sunTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -697,7 +695,7 @@ public class Runner extends JPanel implements KeyListener {
 	        Transform3D sc2 = new Transform3D();
 	        Vector3f trans1 = new Vector3f(0.1f, 0, 0.1f);
 	        sc2.setTranslation(trans1);
-	        sc2.setScale(0.5f);
+	        sc2.setScale(1.5f);
 	        
 	        
 	        TransformGroup earthTG = new TransformGroup(sc2);
@@ -708,11 +706,11 @@ public class Runner extends JPanel implements KeyListener {
 	        earthTG.addChild(earthTG_ROT);
 	        sunTG.addChild(earthTG);
 	        rotate2 = Commons.rotationInterpolator(5000, earthTG_ROT, 'x', new Point3d(trans1));
-	        earthTG.addChild(rotate2);	        
+	                
 
 	        earthTG_ROT.addChild(createShape3D(4));
 	        earth.setCollidable(false);
-			
+	        earthTG.addChild(rotate2);	
 			
 			//tg.addChild(earthTG);
 			tg.addChild(sunTG);
