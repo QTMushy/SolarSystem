@@ -91,12 +91,7 @@ public class NetEscapeRoom extends JFrame {
 		c.setLayout(new BorderLayout());
 		
 		runner = new Assignment5TT(this, playerID);
-		//runner2 = new Runner(this, playerID);
 		c.add(runner);
-		//c.add(runner);
-		
-		//setSize(1910, 600 + 40);                         // set the size of the JFrame
-		//c.setVisible(true);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				disable("exiting");
@@ -146,7 +141,7 @@ public class NetEscapeRoom extends JFrame {
 	public void gameWon(int pid) {
 		if (pid == playerID) { // this client has won
 			disable("You've won!");
-			//runner.youWon();
+			runner.youWon();
 		}
 		else
 			disable("Player " + pid + " has won");

@@ -32,6 +32,7 @@ public class Assignment5TT extends JPanel implements ActionListener {
 	private Canvas3D canvas3D;
 	private OverlayCanvas overlayCanvas3D;
 	private Runner[] runners = new Runner[2];
+	private SimpleUniverse su;
 	//Hashtable<String, MouseListener> m_MouseHashtable = null;
 	
 	public Assignment5TT(NetEscapeRoom fbf, int playerID)	{
@@ -66,7 +67,7 @@ public class Assignment5TT extends JPanel implements ActionListener {
 		MultiTransformGroup mtg = vp.getMultiTransformGroup( );
 		mtg.getTransformGroup(0).setTransform( t3d );
 
-		SimpleUniverse su = new SimpleUniverse(vp, viewer); // a SU with one Vp and 3 Viewers
+		su = new SimpleUniverse(vp, viewer); // a SU with one Vp and 3 Viewers
 		Locale lcl = su.getLocale();                        // point 2nd/3rd Viewer to c3D[1,2]
 		lcl.addBranchGraph( createViewer( overlayCanvas3D, Commons.Orange, 2, 1, 6 ) );
 		
@@ -155,7 +156,11 @@ public class Assignment5TT extends JPanel implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
-
+	public void youWon() {
+		Commons.define_Viewer(su, new Point3d(-5, 4, 0));
+		
+		
+	}
 	/* a function to create and position a simple Cone to represent the Viewer 
 	ViewerAvatar createViewerAvatar( String szText, Color3f objColor ) {
 		ViewerAvatar viewerAvatar = new ViewerAvatar( );
