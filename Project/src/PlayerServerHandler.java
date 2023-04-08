@@ -27,14 +27,14 @@ import java.net.*;
 import java.io.*;
 
 public class PlayerServerHandler extends Thread {
-	private FBFServer server;
+	private Server server;
 	private Socket clientSock;
 	private BufferedReader in;
 	private PrintWriter out;
 
 	private int playerID; // this player id is assigned by FBFServer
 
-	public PlayerServerHandler(Socket s, FBFServer serv) {
+	public PlayerServerHandler(Socket s, Server serv) {
 		clientSock = s;
 		server = serv;
 		System.out.println("Player connection request");

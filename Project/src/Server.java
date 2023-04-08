@@ -16,7 +16,7 @@
 
 import java.net.*;
 
-public class FBFServer {
+public class Server {
 	private static final int PORT = 4321;
 
 	private static final int MAX_PLAYERS = 2;         // two-person game
@@ -27,7 +27,7 @@ public class FBFServer {
 	private PlayerServerHandler[] handlers;        // handlers for players
 	private int numPlayers;
 
-	public FBFServer() {                    // Concurrently process players
+	public Server() {                    // Concurrently process players
 		handlers = new PlayerServerHandler[MAX_PLAYERS];
 		handlers[0] = handlers[1] = null;
 		numPlayers = 0;
@@ -76,7 +76,7 @@ public class FBFServer {
 	// *************************************
 	public static void main(String args[]) {
 		System.out.println("Start server");
-		new FBFServer();
+		new Server();
 	}
 
 }

@@ -22,10 +22,10 @@ import org.jogamp.java3d.utils.geometry.Primitive;
 import org.jogamp.java3d.utils.universe.*;
 import org.jogamp.vecmath.*;
 
-public class Assignment5TT extends JPanel implements ActionListener {
+public class Multiview extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;	
 	static final int width = 600;                            // size of each Canvas3D
-	static final int height = 1000;
+	static final int height = 800;
 
 	// use hash table to map the name of a Viewer to its KeyNavigatorBehavior
 	Hashtable<String, KeyNavigatorBehavior>	m_KeyHashtable = null;
@@ -35,7 +35,7 @@ public class Assignment5TT extends JPanel implements ActionListener {
 	private SimpleUniverse su;
 	//Hashtable<String, MouseListener> m_MouseHashtable = null;
 	
-	public Assignment5TT(NetEscapeRoom fbf, int playerID)	{
+	public Multiview(Client fbf, int playerID)	{
 		m_KeyHashtable = new Hashtable<String, KeyNavigatorBehavior>( );
 		//m_MouseHashtable = new Hashtable<String, MouseListener>( );
 		
@@ -91,8 +91,8 @@ public class Assignment5TT extends JPanel implements ActionListener {
 		Viewer viewer = new Viewer( canvas3D );	             // attach a Viewer to its canvas
 		ViewingPlatform vp = new ViewingPlatform();       // 1 VP with 1 TG above
 		                                                     // assign PG to the Viewer
-		//vp.setPlatformGeometry( labelPlatformGeometry( "test" ) );
-		//viewer.setAvatar( createViewerAvatar( name, clr ) ); // assign VA to the Viewer
+		vp.setPlatformGeometry( labelPlatformGeometry( "test" ) );
+		//viewer.setAvatar( createViewerAvatar( "test", clr ) ); // assign VA to the Viewer
 
 		Point3d center = new Point3d(0, 0, 0);               // define where the eye looks at
 		Vector3d up = new Vector3d(0, 1, 0);                 // define camera's up direction
@@ -107,9 +107,6 @@ public class Assignment5TT extends JPanel implements ActionListener {
 		vp.getViewPlatformTransform( ).setCapability( TransformGroup.ALLOW_TRANSFORM_READ );
 		
 		
-		
-		
-		
 		KeyNavigatorBehavior key = new KeyNavigatorBehavior( vp.getViewPlatformTransform( ) );
 		key.setSchedulingBounds( new BoundingSphere() );          // enable viewer navigation
 		key.setEnable( true );		
@@ -117,14 +114,11 @@ public class Assignment5TT extends JPanel implements ActionListener {
 		viewer.setViewingPlatform( vp );   
 		
 		
-		
-		
-		
 		// set VP for the Viewer	
-		//m_KeyHashtable.put( "test", key );                      // label the Viewer	
-		//Button button = new Button( name ); 
-		//button.addActionListener( this );                     // button to switch the Viewer ON
-		//add( button );
+		m_KeyHashtable.put( "test", key );                      // label the Viewer	
+		Button button = new Button( "Start" ); 
+		button.addActionListener( this );                     // button to switch the Viewer ON
+		add( button );
 
 		return vp;
 	}
@@ -158,8 +152,6 @@ public class Assignment5TT extends JPanel implements ActionListener {
 	}
 	public void youWon() {
 		Commons.define_Viewer(su, new Point3d(-5, 4, 0));
-		
-		
 	}
 	/* a function to create and position a simple Cone to represent the Viewer 
 	ViewerAvatar createViewerAvatar( String szText, Color3f objColor ) {

@@ -20,10 +20,10 @@ public class OverlayCanvas extends Canvas3D {
 	private final static int YPOS = 25;
 	private final static Font MSGFONT = new Font("SansSerif", Font.BOLD, 28);
 
-	private NetEscapeRoom fbf;
+	private Client fbf;
 	private String status;
 
-	public OverlayCanvas(GraphicsConfiguration config, NetEscapeRoom fbf) {
+	public OverlayCanvas(GraphicsConfiguration config, Client fbf) {
 		super(config);
 		this.fbf = fbf;
 		//System.setProperty("sun.java2d.d3d", "false");

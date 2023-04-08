@@ -75,7 +75,7 @@ public class Runner extends JPanel implements KeyListener {
 	public static BranchGroup sceneBG;
 	public static OverlayCanvas canvas3D;
 	private static Canvas3D canvas2 = null;
-	private static NetEscapeRoom thisFBF;
+	private static Client thisFBF;
 	private static int pid;
 	
 	private static SimpleUniverse su;
@@ -114,13 +114,8 @@ public class Runner extends JPanel implements KeyListener {
 		return objRoot;
 
 	}
-	public void youWon() {
-		Commons.define_Viewer(su, new Point3d(-5, 4, 0));
-		
-		
-	}
 	
-	public Runner(OverlayCanvas newCanvas3D, NetEscapeRoom fbf, int playerID) {
+	public Runner(OverlayCanvas newCanvas3D, Client fbf, int playerID) {
 		//setLayout(new BorderLayout());
 		//setOpaque(false);
 		//setPreferredSize(new Dimension(1800, 800));
@@ -807,7 +802,7 @@ public class Runner extends JPanel implements KeyListener {
 			mercuryTG_ROT.addChild(createShape3D(5));
 			planets[2].setCollidable(false);
 			mercuryTG.addChild(rotate3);
-			
+			System.out.println("Create Mercury");
 			
 			
 			// tg.addChild(earthTG);

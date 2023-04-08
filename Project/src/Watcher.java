@@ -19,11 +19,11 @@
 import java.io.*;
 import java.util.*;
 
-public class FBFWatcher extends Thread {
-	private NetEscapeRoom fbf;                    // ref back to client
+public class Watcher extends Thread {
+	private Client fbf;                    // ref back to client
 	private BufferedReader in;
 
-	public FBFWatcher(NetEscapeRoom fbf, BufferedReader i) {
+	public Watcher(Client fbf, BufferedReader i) {
 		this.fbf = fbf;
 		in = i;
 	}

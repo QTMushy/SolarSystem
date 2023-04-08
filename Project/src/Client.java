@@ -54,7 +54,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 
-public class NetEscapeRoom extends JFrame {
+public class Client extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static final int PORT = 4321;          // server details
@@ -65,7 +65,7 @@ public class NetEscapeRoom extends JFrame {
 	private final static int PLAYER2 = 2;
 
 	//private RotatingCube rotCube;
-	private Assignment5TT runner;
+	private Multiview runner;
 	//private Runner runner2;
 	private Socket sock;
 	private PrintWriter out;
@@ -76,8 +76,8 @@ public class NetEscapeRoom extends JFrame {
 	private int currPlayer;       // which player can take a turn now?
 	private boolean isDisabled; // to indicate that the game has ended
 
-	public NetEscapeRoom() {
-		super("Net Four By Four");
+	public Client() {
+		super("Spaceship game");
 
 		playerID = 0;                                   // no id as yet
 		status = null;                           // no status to report
@@ -90,7 +90,7 @@ public class NetEscapeRoom extends JFrame {
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout());
 		
-		runner = new Assignment5TT(this, playerID);
+		runner = new Multiview(this, playerID);
 		c.add(runner);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -111,7 +111,7 @@ public class NetEscapeRoom extends JFrame {
 			BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new PrintWriter(sock.getOutputStream(), true); // autoflush
 
-			new FBFWatcher(this, in).start(); // start watching for server msgs
+			new Watcher(this, in).start(); // start watching for server msgs
 		} catch (Exception e) { // System.out.println(e);
 			System.out.println("Cannot contact the NetFourByFour Server");
 			System.exit(0);
@@ -208,6 +208,6 @@ public class NetEscapeRoom extends JFrame {
    // **************************************
 
 	public static void main(String[] args) {
-		new NetEscapeRoom();
+		new Client();
 	}
 }
