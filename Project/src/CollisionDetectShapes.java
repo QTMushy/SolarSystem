@@ -75,7 +75,7 @@ public class CollisionDetectShapes extends Behavior {
 		if (inCollision) {
 
 			// clip1 = getSound("sound/bell03.wav");
-			Runner.playSound(2);
+			//Runner.playSound(2);
 			// clip1.setFramePosition(0);
 			// clip1.start();
 
@@ -113,6 +113,15 @@ public class CollisionDetectShapes extends Behavior {
 				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
 				Runner.planets[1].setAppearance(app);
 				Runner.rotate2.getAlpha().pause();
+			}
+			
+			if ((theLeaf.getUserData()).equals("mercury") && !Runner.collision_mercury) {
+				System.out.println("colliding with mercury ball");
+				Runner.collision_mercury = true;
+				Appearance app = Runner.planets[2].getAppearance();
+				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
+				Runner.planets[2].setAppearance(app);
+				Runner.rotate3.getAlpha().pause();
 			}
 		} else {
 			wakeupOn(theCriteria[0]);
