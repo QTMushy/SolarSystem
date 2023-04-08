@@ -37,7 +37,7 @@ public class Runner extends JPanel implements KeyListener {
 	public static TransparencyAttributes transAttr_b;
 	public static TransparencyAttributes transAttr_sun;
 	public static TransparencyAttributes transAttr_earth;
-	
+	 
 	
 	
 	private static Text2D text2d;
@@ -74,7 +74,7 @@ public class Runner extends JPanel implements KeyListener {
 
 		TransformGroup tg_2 = new TransformGroup();
 		Transform3D t3d_2 = new Transform3D();
-
+       //TODO: change the position of text
 		t3d.setTranslation(new Vector3d(0.2, 0.35, 0.0));
 		t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
 		t3d.setScale(1.0);
@@ -514,9 +514,9 @@ public class Runner extends JPanel implements KeyListener {
 		tg.setTransform(t3d);
 
 		FloatingBalls balls = new FloatingBalls();
-		tg.addChild(balls.tg);
+	   tg.addChild(balls.tg);
 
-		tg.addChild(balls);
+	   tg.addChild(balls);
 
 		objRoot.addChild(tg);
 		objRoot.compile();
@@ -533,11 +533,12 @@ public class Runner extends JPanel implements KeyListener {
 		Appearance ap = new Appearance();
 
 		float size = 0.042f;
-		//TransparencyAttributes attr = new TransparencyAttributes(TransparencyAttributes.BLENDED, 1.0f);
-	     //ap.setTransparencyAttributes(attr);
+		TransparencyAttributes attr = new TransparencyAttributes(TransparencyAttributes.BLENDED, 0.0f);
+	     ap.setTransparencyAttributes(attr);
 		
 
-		// TextureLoader loader = new TextureLoader("model/transparent.png", this);
+		// TextureLoader loader = new TextureLoader("Img/transparent.jpg", this);
+		ap.setTexture(texturedApp("Img/transparent.png"));
 		// ap.setTexture(loader.getTexture());
 
 		Point3f[] vertex = new Point3f[4];
@@ -547,6 +548,7 @@ public class Runner extends JPanel implements KeyListener {
 		vertex[3] = new Point3f(size, -size, 0.0f);
 
 		QuadArray quadA = new QuadArray(vertex.length, GeometryArray.COORDINATES | GeometryArray.NORMALS);
+		
 
 		quadA.setCoordinates(0, vertex);
 		Shape3D quad3Dr = new Shape3D(quadA, ap);
@@ -665,7 +667,7 @@ public class Runner extends JPanel implements KeyListener {
 			PolygonAttributes polyAttrib = new PolygonAttributes();
 			ap_sun.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
 			ap_sun.setCapability(Appearance.ALLOW_POLYGON_ATTRIBUTES_WRITE);
-			//polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+			polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
 	        ap_sun.setPolygonAttributes(polyAttrib);
 			Transform3D sc1 = new Transform3D();
 	        sc1.setScale(1.4f);
