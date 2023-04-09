@@ -143,16 +143,7 @@ public class Runner extends JPanel implements KeyListener {
 	}
 	/* a function to build the content branch */
 	public static BranchGroup create_Scene(BranchGroup sceneBG, SimpleUniverse su1) {
-		//sceneBG = new BranchGroup(); // create the scene' BranchGroup
-
-		// sceneBG.addChild(createBackground("img/blackback.jpg"));
-
-		// t3d = new Transform3D();
-		// tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-		// t3d.setTranslation(new Vector3d(0.0, 0.0, -15.0));
-		// tg.setTransform(t3d);
-
-		//BranchGroup objRoot = new BranchGroup();
+		
 		TransformGroup sceneTG = new TransformGroup(); // create a TransformGroup (TG)
 		sceneBG.addChild(sceneTG);
 		// createTickTock(sceneTG);
@@ -189,10 +180,6 @@ public class Runner extends JPanel implements KeyListener {
 		
 		return sceneBG;
 
-		// create_objects(sceneBG);
-		// sceneBG.addChild(Commons.rotate_Behavior(7500, tg));
-		// sceneBG.addChild(tg);
-		// return sceneBG;
 	}
 
 	private static Light createLight() {
@@ -216,9 +203,7 @@ public class Runner extends JPanel implements KeyListener {
 	private static BranchGroup createRocket() {
 		System.out.println("createRocket");
 		BranchGroup objRoot = new BranchGroup();
-
 		
-
 		Spaceship spaceship = new Spaceship();
 
 		objRoot.addChild(spaceship.position_Object());
@@ -242,7 +227,6 @@ public class Runner extends JPanel implements KeyListener {
 	}
 
 	public void keyTyped(KeyEvent e) {
-
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -259,7 +243,6 @@ public class Runner extends JPanel implements KeyListener {
 		}
 
 		if (key == 'a') {
-
 			t3dstep.rotZ(Math.PI / 32);
 			tg.getTransform(t3d);
 			t3d.get(matrix);
@@ -271,7 +254,6 @@ public class Runner extends JPanel implements KeyListener {
 		}
 
 		if (key == 'd') {
-
 			t3dstep.rotZ(-Math.PI / 32);
 			tg.getTransform(t3d);
 			t3d.get(matrix);
@@ -283,7 +265,6 @@ public class Runner extends JPanel implements KeyListener {
 		}
 
 		if (key == 'w') {
-
 			t3dstep.rotX(Math.PI / 32);
 			tg.getTransform(t3d);
 			t3d.get(matrix);
@@ -295,7 +276,6 @@ public class Runner extends JPanel implements KeyListener {
 		}
 
 		if (key == 's') {
-
 			t3dstep.rotX(-Math.PI / 32);
 			tg.getTransform(t3d);
 			t3d.get(matrix);
@@ -310,7 +290,6 @@ public class Runner extends JPanel implements KeyListener {
 
 
 	private static BranchGroup createPenguin1() {
-
 		BranchGroup objRoot = new BranchGroup();
 
 		tg = new TransformGroup();
@@ -368,7 +347,6 @@ public class Runner extends JPanel implements KeyListener {
 		posit2.setSchedulingBounds(bounds);
 
 		tg_sh.addChild(posit2);
-		// tg_sh.addChild(createPenguinShadow());
 		tg_2.addChild(tg_sh);
 		tg.addChild(tg_2);
 

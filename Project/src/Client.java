@@ -129,9 +129,9 @@ public class Client extends JFrame {
 		System.out.println("My player ID: " + id);
 		playerID = id;
 		if (playerID == PLAYER1)
-			setTitle("Rotating Cube. Player 1");
+			setTitle("Spaceship game Player 1");
 		else // PLAYER2
-			setTitle("Rotating Cube. Player 2");
+			setTitle("Spaceship game Player 2");
 
 		numPlayers = id;
 		
