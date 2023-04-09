@@ -67,7 +67,7 @@ public class Multiview extends JPanel implements ActionListener {
 		
 		BranchGroup scene = new BranchGroup();
 		
-		
+		Runner.create_Scene(scene,su);
 		Commons.key_Navigation(su);
 		
 		
