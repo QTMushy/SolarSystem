@@ -18,8 +18,8 @@ import org.jogamp.vecmath.*;
 
 public class Multiview extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;	
-	static final int width = 200;                            // size of each Canvas3D
-	static final int height = 300;
+	static final int width = 600;                            // size of each Canvas3D
+	static final int height = 1000;
 
 	// use hash table to map the name of a Viewer to its KeyNavigatorBehavior
 	Hashtable<String, KeyNavigatorBehavior>	m_KeyHashtable = null;

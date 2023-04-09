@@ -1,19 +1,4 @@
 
-// FBFServer.java
-// Andrew Davison, April 2005, ad@fivedots.coe.psu.ac.th
-
-/* A threaded server specialised to deal with at most two
-   concurrent links from the two players involved in the
-   FourByFour game.
-
-   This is a thin server -- all the game logic is located
-   on the client-side.
-
-   The shared data is an array of references to the handlers
-   and the current number of players. Since this is so little,
-   a shared object is not used to maintain it. 
-*/
-
 import java.net.*;
 
 public class Server {
@@ -49,8 +34,6 @@ public class Server {
 		return (numPlayers == MAX_PLAYERS);
 	}
 
-	/* store a reference to the handler, and return a player ID to the handler.
-	 * The ID is the array index where the handler is stored + 1. */
 	synchronized public int addPlayer(PlayerServerHandler h) {
 		for (int i = 0; i < MAX_PLAYERS; i++)
 			if (handlers[i] == null) {

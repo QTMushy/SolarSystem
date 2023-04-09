@@ -1,13 +1,4 @@
 
-// OverlayCanvas.java
-// Andrew Davison, April 2005, ad@fivedots.coe.psu.ac.th
-/*
-   The 3D Canvas includes a status line,
-   displayed in red, at the top left corner.
-
-   Current status information is obtained from
-   the NetFourByFour object each time postSwap() is called.
-*/
 
 import java.awt.*;
 import org.jogamp.java3d.Canvas3D;

@@ -125,6 +125,34 @@ public class CollisionDetectShapes extends Behavior {
 				Runner.planets[2].setAppearance(app);
 				Runner.rotate3.getAlpha().pause();
 			}
+			if((theLeaf.getUserData()).equals("venus") && !Runner.collision_venus) {
+                System.out.println("colliding with venus ball");
+                Runner.playSound(2);
+                Runner.collision_venus = true;
+                Appearance app = Runner.planets[3].getAppearance();
+                app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
+                Runner.planets[3].setAppearance(app);
+                Runner.rotate4.getAlpha().pause();
+            }
+            if((theLeaf.getUserData()).equals("mars") && !Runner.collision_mars) {
+                System.out.println("colliding with mars ball");
+                Runner.playSound(2);
+                Runner.collision_mars = true;
+                Appearance app = Runner.planets[4].getAppearance();
+                app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
+                Runner.planets[4].setAppearance(app);
+                Runner.rotate5.getAlpha().pause();
+            }
+            if((theLeaf.getUserData()).equals("jupiter") && !Runner.collision_jupiter) {
+                System.out.println("colliding with jupiter ball");
+                Runner.playSound(2);
+                Runner.collision_jupiter = true;
+                Appearance app = Runner.planets[5].getAppearance();
+                app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
+                Runner.planets[5].setAppearance(app);
+                Runner.rotate6.getAlpha().pause();
+            }
+
 		} else {
 			wakeupOn(theCriteria[0]);
 		}

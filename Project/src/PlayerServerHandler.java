@@ -1,28 +1,4 @@
 
-
-// PlayerServerHandler.java
-// Andrew Davison, April 2005, ad@fivedots.coe.psu.ac.th
-
-/* Handle messages from the client.
-
-   Upon initial connection:
-       response to client is:
-             ok <playerID>   or    full
-       message to other client if player is accepted:
-             added <playerID>
-
-   Other client messages:
-   * disconnect
-     message to other client:
-             removed <playerID>
-       
-   * try <posn>
-     response to client
-        tooFewPlayers
-      message to other client if turn accepted
-        otherTurn <playerID> <posn>
-*/
-
 import java.net.*;
 import java.io.*;
 
@@ -46,10 +22,6 @@ public class PlayerServerHandler extends Thread {
 		}
 	}
 
-	/*
-	 * Add this player to FSFServer array, get an ID, then start processing
-	 * client-side input
-	 */
 	public void run() {
 		playerID = server.addPlayer(this);
 		if (playerID != -1) {                 // -1 means adding the player was rejected
@@ -72,9 +44,6 @@ public class PlayerServerHandler extends Thread {
 		}
 	} 
 
-	/* Stop when the input stream closes (is null) or "disconnect" is sent.
-	 * Otherwise pass the input to doRequest().
-	 */
 	private void processPlayerInput() {
 		String line;
 		boolean done = false;
@@ -94,11 +63,6 @@ public class PlayerServerHandler extends Thread {
 		}
 	}
 
-	/*The input line can be : try <posn> -- try to occupy position pos (pos == 0-63)
-	 * 
-	 * No checking of posn done here; we assume the client has checked it. No
-	 * checking of turn order here; we assume the client is doing it
-	 */
 	private void doRequest(String line) {
 		if (line.startsWith("try")) {
 			try {

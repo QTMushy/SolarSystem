@@ -1,21 +1,4 @@
 
-
-// FBFWatcher.java
-// Andrew Davison, April 2005, ad@fivedots.coe.psu.ac.th
-
-/* FBFWatcher monitors the stream coming from the server
-   which will contain messages that must be processed by 
-   the client (a NetFourByFour object)
-
-   Incoming Messages:
-    ok <playerID>           -- connection accepted; include player ID
-    full                    -- connection refused; server has enough players
-    tooFewPlayers           -- turn rejected, since not enough players
-    otherTurn <player> <posn>  -- turn by other player sent to client
-    added <player>          -- other player added to server
-    removed <player>        -- other player removed
-*/
-
 import java.io.*;
 import java.util.*;
 
