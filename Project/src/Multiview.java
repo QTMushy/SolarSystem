@@ -1,10 +1,4 @@
 
-
-/* *********************************************************
- * For use by students to work on assignments and project.
- * Permission required material. Contact: xyuan@uwindsor.ca 
- **********************************************************/
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
@@ -24,8 +18,8 @@ import org.jogamp.vecmath.*;
 
 public class Multiview extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;	
-	static final int width = 600;                            // size of each Canvas3D
-	static final int height = 800;
+	static final int width = 200;                            // size of each Canvas3D
+	static final int height = 300;
 
 	// use hash table to map the name of a Viewer to its KeyNavigatorBehavior
 	Hashtable<String, KeyNavigatorBehavior>	m_KeyHashtable = null;
@@ -72,10 +66,6 @@ public class Multiview extends JPanel implements ActionListener {
 		lcl.addBranchGraph( createViewer( overlayCanvas3D, Commons.Orange, 2, 1, 6 ) );
 		
 		BranchGroup scene = new BranchGroup();
-		Runner.create_Scene(scene,su);                  // create a one-cube scene
-		//TransformGroup scene_TG = new TransformGroup();
-		//scene.addChild(scene_TG);
-		//scene.addChild(CommonsTT.add_Lights(CommonsTT.White, 1));
 		
 		
 		Commons.key_Navigation(su);
@@ -153,35 +143,5 @@ public class Multiview extends JPanel implements ActionListener {
 	public void youWon() {
 		Commons.define_Viewer(su, new Point3d(-5, 4, 0));
 	}
-	/* a function to create and position a simple Cone to represent the Viewer 
-	ViewerAvatar createViewerAvatar( String szText, Color3f objColor ) {
-		ViewerAvatar viewerAvatar = new ViewerAvatar( );
-		// lay down the Cone, pointing sharp-end towards the Viewer's field of view
-		TransformGroup tg = new TransformGroup( );
-		Transform3D t3d = new Transform3D( );
-		t3d.setEuler( new Vector3d( Math.PI / 2.0, Math.PI, 0 ) );
-		tg.setTransform( t3d );
-		
-		Appearance app = Commons.obj_Appearance(objColor);
-		
-		tg.addChild( new Cone( 0.5f, 1.5f, Primitive.GENERATE_NORMALS, app ) );
-		viewerAvatar.addChild( tg );                         // add Cone to parent BranchGroup
-
-		return viewerAvatar;
-	}
-
-	
-	
-
-
-	
-
-	public static void main( String[] args ) { 
-		JFrame frame = new JFrame("Code for Assignment 5");
-		frame.getContentPane().add(new Assignment5TT()); // create an instance of the class
-		frame.setSize(1910, height + 40);                         // set the size of the JFrame
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}*/
 	
 }	
