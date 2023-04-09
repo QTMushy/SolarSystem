@@ -129,13 +129,6 @@ public class Runner extends JPanel implements KeyListener {
 	}
 	
 	public Runner(OverlayCanvas newCanvas3D, Client fbf, int playerID) {
-		//setLayout(new BorderLayout());
-		//setOpaque(false);
-		//setPreferredSize(new Dimension(1800, 800));
-
-		//GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
-		
-		// canvas3D.addMouseListener(this); // NOTE: enable mouse clicking
 		canvas3D = newCanvas3D;
 		canvas3D.addKeyListener(this);
 		//add("Center", canvas3D);
@@ -146,30 +139,6 @@ public class Runner extends JPanel implements KeyListener {
 		thisFBF = fbf;
 		pid = playerID;
 
-		//create_Scene();
-
-		
-		//GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
-		//Canvas3D canvas = new Canvas3D(config);
-		
-
-
-		//SimpleUniverse su = new SimpleUniverse(canvas); // create a SimpleUniverse
-		//Commons.define_Viewer(su, new Point3d(2, 1, 6));
-		//su.getViewer().getView().setBackClipDistance(1000000.0);
-		//sceneBG.addChild(Commons.key_Navigation(su)); // allow key navigation
-		//sceneBG.compile(); // optimize the BranchGroup
-
-		//su.addBranchGraph(sceneBG); // attach the scene to SimpleUniverse
-
-		//viewtrans = su.getViewingPlatform().getViewPlatformTransform();
-		//PlatformGeometry platformGeom = new PlatformGeometry();
-		//platformGeom.addChild(Commons.key_Navigation(su));
-		//su.getViewingPlatform().setPlatformGeometry(platformGeom);
-		//setLayout(new BorderLayout());
-		//add("Center", canvas3D);
-		//frame.setSize(800, 800); // set the size of the JFrame
-		//frame.setVisible(true);
 
 	}
 	/* a function to build the content branch */
@@ -248,122 +217,18 @@ public class Runner extends JPanel implements KeyListener {
 		System.out.println("createRocket");
 		BranchGroup objRoot = new BranchGroup();
 
-		// tgSpaceship = new TransformGroup();
-		// t3d = new Transform3D();
-
-		// tgSpaceship.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-
-		// t3d.setTranslation(new Vector3d(0.0, 0.0, -1.0));
-		// tgSpaceship.setTransform(t3d);
-
-		// TransformGroup tg_sp = new TransformGroup();
-		// Transform3D t3d_sp = new Transform3D();
-
-		// t3d_sp.setTranslation(new Vector3d(0.0, 1.0, 0.0));
-		// tg_sp.setTransform(t3d_sp);
+		
 
 		Spaceship spaceship = new Spaceship();
 
-		// tgSpaceship.addChild(tg_sp);
-		// tgSpaceship.addChild(spaceship.position_Object());
 		objRoot.addChild(spaceship.position_Object());
 
-		// objRoot.addChild(tg);
 		return objRoot;
 	}
 
 	public static Objects[] object3D = new Objects[8];
 
-	/*
-	 * public static void create_objects(BranchGroup bg) { // TransformGroup objTG =
-	 * new TransformGroup(); // object3D[0] = new Sphere(); //
-	 * objTG.addChild(object3D[0].position_Object());
-	 * 
-	 * // Transform3D sc1 = new Transform3D(); // sc1.setScale(1.1f);
-	 * 
-	 * Vector3f sunVector = new Vector3f(0f,0f,0f); Transform3D sun =
-	 * Commons.createTransform(sunVector, 0.11f);
-	 * 
-	 * 
-	 * Vector3f mercuryVector = new Vector3f(1.05f,0f,0.4f); Transform3D mercury =
-	 * Commons.createTransform(mercuryVector, 0.038f);
-	 * 
-	 * Vector3f venusVector = new Vector3f(1.05f, 0f, 0.77f); Transform3D venus =
-	 * Commons.createTransform(venusVector, 0.095f);
-	 * 
-	 * Vector3f earthvVector = new Vector3f(1.05f, 0, 0.10f); Transform3D earth =
-	 * Commons.createTransform(earthvVector, 0.11f);
-	 * 
-	 * 
-	 * Vector3f marsVector = new Vector3f(1.05f, 0, 15f); Transform3D mars =
-	 * Commons.createTransform(marsVector, 0.053f);
-	 * 
-	 * Vector3f jupiterVector = new Vector3f(1.05f,0,52f); Transform3D jupiter =
-	 * Commons.createTransform(jupiterVector, 1.12f);
-	 * 
-	 * 
-	 * 
-	 * // Transform3D sc3 = new Transform3D(); // Vector3f moon = new Vector3f(0,
-	 * 1.05f, 1.05f); // sc3.setTranslation(moon); // sc3.setScale(0.35f);
-	 * 
-	 * 
-	 * 
-	 * // sun and rotation behaviour TransformGroup sunTG = new TransformGroup(sun);
-	 * object3D[0] = new Sphere("Sun");
-	 * sunTG.addChild(object3D[0].position_Object());// sun sphere
-	 * bg.addChild(sunTG); rotationInterpolators[0] =
-	 * Commons.rotationInterpolator(10000, sunTG, 'y', new Point3d(sunVector));
-	 * sunTG.addChild(rotationInterpolators[0]);
-	 * 
-	 * // Mercuty Sphere TransformGroup mercutyTG = new TransformGroup(mercury);
-	 * TransformGroup mercutyROT = new TransformGroup(); object3D[1] = new
-	 * Sphere("Mercury"); mercutyROT.addChild(object3D[1].position_Object());
-	 * mercutyTG.addChild(mercutyROT); sunTG.addChild(mercutyTG);
-	 * rotationInterpolators[1] = null;
-	 * mercutyTG.addChild(rotationInterpolators[1]);
-	 * 
-	 * // Venus Sphere TransformGroup venusTG = new TransformGroup(venus);
-	 * TransformGroup venusROT = new TransformGroup(); object3D[4] = new
-	 * Sphere("Venus"); venusROT.addChild(object3D[4].position_Object());
-	 * venusTG.addChild(venusROT); sunTG.addChild(venusTG); rotationInterpolators[4]
-	 * = Commons.rotationInterpolator(3000, venusROT, 'x', new
-	 * Point3d(venusVector)); venusTG.addChild(rotationInterpolators[4]);
-	 * 
-	 * 
-	 * /// Earth sphere /// reference frames TransformGroup earthTG = new
-	 * TransformGroup(earth); TransformGroup earthROT = new TransformGroup();
-	 * object3D[2] = new Sphere("Earth");
-	 * earthROT.addChild(object3D[2].position_Object()); earthTG.addChild(earthROT);
-	 * sunTG.addChild(earthTG); rotationInterpolators[2] = null;
-	 * earthTG.addChild(rotationInterpolators[2]);
-	 * 
-	 * // Mars Sphere TransformGroup marsTG = new TransformGroup(mars);
-	 * TransformGroup marsROT = new TransformGroup(); object3D[5] = new
-	 * Sphere("Mars"); marsROT.addChild(object3D[5].position_Object());
-	 * marsTG.addChild(marsROT); sunTG.addChild(marsTG); rotationInterpolators[5] =
-	 * Commons.rotationInterpolator(5000, marsROT, 'x', new Point3d(marsVector));
-	 * marsTG.addChild(rotationInterpolators[5]);
-	 * 
-	 * //jupiter Sphere TransformGroup jupiterTG = new TransformGroup(jupiter);
-	 * TransformGroup jupiterROT = new TransformGroup(); object3D[6] = new
-	 * Sphere("Jupiter"); jupiterROT.addChild(object3D[6].position_Object());
-	 * jupiterTG.addChild(jupiterROT); sunTG.addChild(jupiterTG);
-	 * rotationInterpolators[6] = Commons.rotationInterpolator(5000, jupiterROT,
-	 * 'x', new Point3d(jupiterVector));
-	 * jupiterTG.addChild(rotationInterpolators[6]);
-	 * 
-	 * 
-	 * /// Moon sphere // TransformGroup moonTG = new TransformGroup(sc2); //
-	 * TransformGroup moonROT = new TransformGroup(); // object3D[3] = new
-	 * Sphere("Moon"); // moonROT.addChild(object3D[3].position_Object());// moon
-	 * sphere // moonTG.addChild(moonROT); // earthROT.addChild(moonTG); //
-	 * rotationInterpolators[3] = Commons.rotationInterpolator(2500, moonROT, 'z',
-	 * new Point3d(moon)); // moonTG.addChild(rotationInterpolators[3]);
-	 * 
-	 * //return objTG; }
-	 */
-	
-	
+
 	
 
 	public static Background createBackground(String name) {
@@ -443,42 +308,6 @@ public class Runner extends JPanel implements KeyListener {
 
 	}
 
-	/*
-	 * public static void main(String[] args) { frame = new JFrame("Solar System");
-	 * frame.getContentPane().add(new Runner(create_Scene())); // create an instance
-	 * of the class frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); }
-	 */
-
-	/*
-	 * private static void createTickTock(TransformGroup sceneTG) { Vector3d[] pos =
-	 * { new Vector3d(-0.52, 0.0, 0.0), new Vector3d(0.52, 0.0, 0.0) }; for (int i =
-	 * 0; i < 2; i++) sceneTG.addChild(createColumn(0.12, pos[i]));
-	 * 
-	 * }
-	 * 
-	 * private static TransformGroup createColumn(double scale, Vector3d pos) {
-	 * Transform3D transM = new Transform3D(); transM.set(scale, pos); // Create
-	 * base TG with 'scale' and 'position' TransformGroup baseTG = new
-	 * TransformGroup(transM);
-	 * 
-	 * Sphere shape = new Sphere();
-	 * 
-	 * // Shape3D shape = new Sphere(0.5, 5.0, 1.0); baseTG.addChild(shape); //
-	 * Create a column as a box and add to 'baseTG'
-	 * 
-	 * Appearance app = shape.getAppearance(); ColoringAttributes ca = new
-	 * ColoringAttributes(); ca.setColor(0.6f, 0.3f, 0.0f); // set column's color
-	 * and make changeable
-	 * app.setCapability(Appearance.ALLOW_COLORING_ATTRIBUTES_WRITE);
-	 * app.setColoringAttributes(ca);
-	 * 
-	 * CollisionDetectShapes cd = new CollisionDetectShapes(shape);
-	 * cd.setSchedulingBounds(new BoundingSphere(pt_zero, 10d)); // detect column's
-	 * collision
-	 * 
-	 * baseTG.addChild(cd); // add column with behavior of CollisionDector return
-	 * baseTG; }
-	 */
 
 	private static BranchGroup createPenguin1() {
 
@@ -876,9 +705,9 @@ public class Runner extends JPanel implements KeyListener {
 
 			ap_mars.setPolygonAttributes(polyAttrib);
 			Transform3D sc5 = new Transform3D();
-			Vector3f trans4 = new Vector3f(0.1f, 0, 0.7f);
+			Vector3f trans4 = new Vector3f(0.1f, 0, 0.5f);
 			sc5.setTranslation(trans4);
-			sc5.setScale(0.8f);
+			sc5.setScale(1f);
 
 			TransformGroup marsTG = new TransformGroup(sc5);
 			marsTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -907,7 +736,7 @@ public class Runner extends JPanel implements KeyListener {
 
 			ap_jupiter.setPolygonAttributes(polyAttrib);
 			Transform3D sc6 = new Transform3D();
-			Vector3f trans5 = new Vector3f(0.1f, 0, 1.2f);
+			Vector3f trans5 = new Vector3f(0.1f, 0, 0.7f);
 			sc6.setTranslation(trans5);
 			sc6.setScale(2.5f);
 			
@@ -924,7 +753,6 @@ public class Runner extends JPanel implements KeyListener {
 			planets[5].setCollidable(false);
 			jupiterTG.addChild(rotate6);
 
-			
 			
 			// tg.addChild(earthTG);
 			tg.addChild(sunTG);
@@ -951,8 +779,8 @@ public class Runner extends JPanel implements KeyListener {
 		@Override
 		public void processStimulus(Iterator<WakeupCriterion> arg0) {
 			// TODO Auto-generated method stub
-			if (!done) {
-				if (collision_mercury && collision_sun && collision_earth) {
+			
+				if (collision_mercury && collision_sun && collision_earth && collision_venus && collision_mars) {
 					end = System.currentTimeMillis();
 					elapsed = end - start - delay;
 					done = true;
@@ -966,7 +794,7 @@ public class Runner extends JPanel implements KeyListener {
 					elapsed = current - start - delay;
 					// System.out.println("elapsed: "+elapsed);
 				}
-			}
+			
 
 			if (!done) {
 				min = (int) Math.floor(elapsed / 60000);
