@@ -1,12 +1,16 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.image.TextureLoader;
+import org.jogamp.java3d.utils.universe.MultiTransformGroup;
 import org.jogamp.java3d.utils.universe.PlatformGeometry;
 import org.jogamp.java3d.utils.universe.SimpleUniverse;
+import org.jogamp.java3d.utils.universe.Viewer;
+import org.jogamp.java3d.utils.universe.ViewingPlatform;
 import org.jogamp.vecmath.*;
 
 import java.awt.event.KeyListener;
@@ -16,6 +20,7 @@ import java.awt.event.KeyEvent;
 import org.jdesktop.j3d.examples.collision.Box;
 import org.jogamp.java3d.utils.geometry.Cylinder;
 import org.jogamp.java3d.utils.geometry.Sphere;
+import org.jogamp.java3d.utils.behaviors.keyboard.KeyNavigatorBehavior;
 import org.jogamp.java3d.utils.geometry.*;
 
 public class Runner extends JPanel implements KeyListener {
@@ -32,13 +37,16 @@ public class Runner extends JPanel implements KeyListener {
 	private static Matrix4d matrix = new Matrix4d();
 	private static TransformGroup viewtrans = null;
 	private static SimpleUniverse universe = null;
-	private static Canvas3D canvas = null;
+	
 	public static TransparencyAttributes transAttr_r;
 	public static TransparencyAttributes transAttr_b;
 	public static TransparencyAttributes transAttr_sun;
 	public static TransparencyAttributes transAttr_earth;
-	 
-	
+	public static TransparencyAttributes transAttr_mercury;
+	public static TransparencyAttributes transAttr_venus;
+    public static TransparencyAttributes transAttr_mars;
+    public static TransparencyAttributes transAttr_jupiter;
+
 	
 	private static Text2D text2d;
 	private static Text2D text2d_2;
@@ -49,7 +57,12 @@ public class Runner extends JPanel implements KeyListener {
 	public static boolean collision_b = false;
 	public static boolean collision_sun = false;
 	public static boolean collision_earth = false;
-	
+	public static boolean collision_mercury = false;
+	public static boolean collision_venus = false;
+    public static boolean collision_mars = false;
+    public static boolean collision_jupiter = false;
+
+
 	private static TransformGroup tg_2 = null;
 	private static Transform3D t3d_2 = null;
 
@@ -57,14 +70,30 @@ public class Runner extends JPanel implements KeyListener {
 	private static SoundUtilityJOAL soundJOAL;
 
 	public static RotationInterpolator rotate1;
-    public static RotationInterpolator rotate2;
-    
-    public static Sphere sun;
-    
-    
-    
-    
-    
+	public static RotationInterpolator rotate2;
+	public static RotationInterpolator rotate3;
+	public static RotationInterpolator rotate4;
+	public static RotationInterpolator rotate5;
+	public static RotationInterpolator rotate6;
+	public static RotationInterpolator rotate7;
+	public static RotationInterpolator rotate8;
+	public static RotationInterpolator rotate9;
+	
+	// public static Sphere sun;
+	public static Sphere[] planets = new Sphere[8];
+
+
+	public static Sphere sun;
+
+	public static BranchGroup sceneBG;
+	public static OverlayCanvas canvas3D;
+	private static Canvas3D canvas2 = null;
+	private static Client thisFBF;
+	private static int pid;
+	
+	private static SimpleUniverse su;
+	
+	
 	private static BranchGroup createText2D() {
 
 		BranchGroup objRoot = new BranchGroup();
@@ -74,19 +103,19 @@ public class Runner extends JPanel implements KeyListener {
 
 		TransformGroup tg_2 = new TransformGroup();
 		Transform3D t3d_2 = new Transform3D();
-       //TODO: change the position of text
-		t3d.setTranslation(new Vector3d(0.2, 0.35, 0.0));
+		// TODO: change the position of text
+		t3d.setTranslation(new Vector3d(0.2, 1.35, 0.0));
 		t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
 		t3d.setScale(1.0);
 		tg.setTransform(t3d);
 
-		t3d_2.setTranslation(new Vector3d(0.55, 0.35, 0.0));
+		t3d_2.setTranslation(new Vector3d(0.55, 1.35, 0.0));
 		t3d_2.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
 		t3d_2.setScale(1.0);
 		tg_2.setTransform(t3d_2);
 
-		text2d = new Text2D("", new Color3f(1.0f, 0.0f, 0.0f), "Helvetica", 24, Font.ITALIC);
-		text2d_2 = new Text2D("", new Color3f(0.0f, 0.0f, 0.8f), "Helvetica", 28, Font.ITALIC);
+		text2d = new Text2D("", Commons.White, "Helvetica", 24, Font.ITALIC);
+		text2d_2 = new Text2D("", Commons.White, "Helvetica", 28, Font.ITALIC);
 
 		tg.addChild(text2d);
 		tg_2.addChild(text2d_2);
@@ -98,43 +127,59 @@ public class Runner extends JPanel implements KeyListener {
 		return objRoot;
 
 	}
+	
+	public Runner(OverlayCanvas newCanvas3D, Client fbf, int playerID) {
+		canvas3D = newCanvas3D;
+		canvas3D.addKeyListener(this);
+		//add("Center", canvas3D);
+		//su = new SimpleUniverse(canvas3D); // create a
 
+		//Commons.define_Viewer(su, new Point3d(2, 1, 6)); // set the viewer's location
+
+		thisFBF = fbf;
+		pid = playerID;
+
+
+	}
 	/* a function to build the content branch */
-	public static BranchGroup create_Scene() {
-		// BranchGroup sceneBG = new BranchGroup(); // create the scene' BranchGroup
-
-		// sceneBG.addChild(createBackground("img/blackback.jpg"));
-
-		// t3d = new Transform3D();
-		// tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-		// t3d.setTranslation(new Vector3d(0.0, 0.0, -15.0));
-		// tg.setTransform(t3d);
-
-		BranchGroup objRoot = new BranchGroup();
+	public static BranchGroup create_Scene(BranchGroup sceneBG, SimpleUniverse su1) {
+		
 		TransformGroup sceneTG = new TransformGroup(); // create a TransformGroup (TG)
-		objRoot.addChild(sceneTG);
+		sceneBG.addChild(sceneTG);
 		// createTickTock(sceneTG);
 		BoundingSphere bounds = new BoundingSphere(new Point3d(), 10000.0);
-		// objRoot.addChild(createBackground("img/blackback.jpg"));
+		sceneBG.addChild(createBackground("img/blackback.jpg"));
 		Background background = new Background();
 		background.setColor(1.0f, 1.0f, 1.0f);
 		background.setApplicationBounds(bounds);
-		objRoot.addChild(background);
+		sceneBG.addChild(background);
 
 		// objRoot.addChild(createRocket());
-		objRoot.addChild(createPenguin1());
+		sceneBG.addChild(createPenguin1());
 
-		objRoot.addChild(createBalls());
+		sceneBG.addChild(createBalls());
 
 		// objRoot.addChild(createText2D());
-		objRoot.addChild(createLight());
-		objRoot.addChild(createText2D());
-		return objRoot;
+		sceneBG.addChild(createLight());
+		sceneBG.addChild(createText2D());
 
-		// create_objects(sceneBG);
-		// sceneBG.addChild(Commons.rotate_Behavior(7500, tg));
-		// sceneBG.addChild(tg);
-		// return sceneBG;
+		//initialSound();
+		
+		sceneBG.addChild(Commons.key_Navigation(su1)); // allow key navigation
+		sceneBG.compile(); // optimize the BranchGroup
+
+		
+		 
+	     viewtrans = su1.getViewingPlatform().getViewPlatformTransform();
+	 
+	     KeyNavigatorBehavior keyNavBeh = new KeyNavigatorBehavior(viewtrans);
+	     keyNavBeh.setSchedulingBounds(bounds);
+	     PlatformGeometry platformGeom = new PlatformGeometry();
+	     platformGeom.addChild(keyNavBeh);
+	     su1.getViewingPlatform().setPlatformGeometry(platformGeom);
+		
+		return sceneBG;
+
 	}
 
 	private static Light createLight() {
@@ -156,147 +201,20 @@ public class Runner extends JPanel implements KeyListener {
 	}
 
 	private static BranchGroup createRocket() {
+		System.out.println("createRocket");
 		BranchGroup objRoot = new BranchGroup();
-
-		// tgSpaceship = new TransformGroup();
-		// t3d = new Transform3D();
-
-		// tgSpaceship.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-
-		// t3d.setTranslation(new Vector3d(0.0, 0.0, -1.0));
-		// tgSpaceship.setTransform(t3d);
-
-		// TransformGroup tg_sp = new TransformGroup();
-		// Transform3D t3d_sp = new Transform3D();
-
-		// t3d_sp.setTranslation(new Vector3d(0.0, 1.0, 0.0));
-		// tg_sp.setTransform(t3d_sp);
-
+		
 		Spaceship spaceship = new Spaceship();
 
-		// tgSpaceship.addChild(tg_sp);
-		// tgSpaceship.addChild(spaceship.position_Object());
 		objRoot.addChild(spaceship.position_Object());
 
-		// objRoot.addChild(tg);
 		return objRoot;
 	}
 
 	public static Objects[] object3D = new Objects[8];
 
-	/*
-	 * public static void create_objects(BranchGroup bg) { // TransformGroup objTG =
-	 * new TransformGroup(); // object3D[0] = new Sphere(); //
-	 * objTG.addChild(object3D[0].position_Object());
-	 * 
-	 * // Transform3D sc1 = new Transform3D(); // sc1.setScale(1.1f);
-	 * 
-	 * Vector3f sunVector = new Vector3f(0f,0f,0f); Transform3D sun =
-	 * Commons.createTransform(sunVector, 0.11f);
-	 * 
-	 * 
-	 * Vector3f mercuryVector = new Vector3f(1.05f,0f,0.4f); Transform3D mercury =
-	 * Commons.createTransform(mercuryVector, 0.038f);
-	 * 
-	 * Vector3f venusVector = new Vector3f(1.05f, 0f, 0.77f); Transform3D venus =
-	 * Commons.createTransform(venusVector, 0.095f);
-	 * 
-	 * Vector3f earthvVector = new Vector3f(1.05f, 0, 0.10f); Transform3D earth =
-	 * Commons.createTransform(earthvVector, 0.11f);
-	 * 
-	 * 
-	 * Vector3f marsVector = new Vector3f(1.05f, 0, 15f); Transform3D mars =
-	 * Commons.createTransform(marsVector, 0.053f);
-	 * 
-	 * Vector3f jupiterVector = new Vector3f(1.05f,0,52f); Transform3D jupiter =
-	 * Commons.createTransform(jupiterVector, 1.12f);
-	 * 
-	 * 
-	 * 
-	 * // Transform3D sc3 = new Transform3D(); // Vector3f moon = new Vector3f(0,
-	 * 1.05f, 1.05f); // sc3.setTranslation(moon); // sc3.setScale(0.35f);
-	 * 
-	 * 
-	 * 
-	 * // sun and rotation behaviour TransformGroup sunTG = new TransformGroup(sun);
-	 * object3D[0] = new Sphere("Sun");
-	 * sunTG.addChild(object3D[0].position_Object());// sun sphere
-	 * bg.addChild(sunTG); rotationInterpolators[0] =
-	 * Commons.rotationInterpolator(10000, sunTG, 'y', new Point3d(sunVector));
-	 * sunTG.addChild(rotationInterpolators[0]);
-	 * 
-	 * // Mercuty Sphere TransformGroup mercutyTG = new TransformGroup(mercury);
-	 * TransformGroup mercutyROT = new TransformGroup(); object3D[1] = new
-	 * Sphere("Mercury"); mercutyROT.addChild(object3D[1].position_Object());
-	 * mercutyTG.addChild(mercutyROT); sunTG.addChild(mercutyTG);
-	 * rotationInterpolators[1] = null;
-	 * mercutyTG.addChild(rotationInterpolators[1]);
-	 * 
-	 * // Venus Sphere TransformGroup venusTG = new TransformGroup(venus);
-	 * TransformGroup venusROT = new TransformGroup(); object3D[4] = new
-	 * Sphere("Venus"); venusROT.addChild(object3D[4].position_Object());
-	 * venusTG.addChild(venusROT); sunTG.addChild(venusTG); rotationInterpolators[4]
-	 * = Commons.rotationInterpolator(3000, venusROT, 'x', new
-	 * Point3d(venusVector)); venusTG.addChild(rotationInterpolators[4]);
-	 * 
-	 * 
-	 * /// Earth sphere /// reference frames TransformGroup earthTG = new
-	 * TransformGroup(earth); TransformGroup earthROT = new TransformGroup();
-	 * object3D[2] = new Sphere("Earth");
-	 * earthROT.addChild(object3D[2].position_Object()); earthTG.addChild(earthROT);
-	 * sunTG.addChild(earthTG); rotationInterpolators[2] = null;
-	 * earthTG.addChild(rotationInterpolators[2]);
-	 * 
-	 * // Mars Sphere TransformGroup marsTG = new TransformGroup(mars);
-	 * TransformGroup marsROT = new TransformGroup(); object3D[5] = new
-	 * Sphere("Mars"); marsROT.addChild(object3D[5].position_Object());
-	 * marsTG.addChild(marsROT); sunTG.addChild(marsTG); rotationInterpolators[5] =
-	 * Commons.rotationInterpolator(5000, marsROT, 'x', new Point3d(marsVector));
-	 * marsTG.addChild(rotationInterpolators[5]);
-	 * 
-	 * //jupiter Sphere TransformGroup jupiterTG = new TransformGroup(jupiter);
-	 * TransformGroup jupiterROT = new TransformGroup(); object3D[6] = new
-	 * Sphere("Jupiter"); jupiterROT.addChild(object3D[6].position_Object());
-	 * jupiterTG.addChild(jupiterROT); sunTG.addChild(jupiterTG);
-	 * rotationInterpolators[6] = Commons.rotationInterpolator(5000, jupiterROT,
-	 * 'x', new Point3d(jupiterVector));
-	 * jupiterTG.addChild(rotationInterpolators[6]);
-	 * 
-	 * 
-	 * /// Moon sphere // TransformGroup moonTG = new TransformGroup(sc2); //
-	 * TransformGroup moonROT = new TransformGroup(); // object3D[3] = new
-	 * Sphere("Moon"); // moonROT.addChild(object3D[3].position_Object());// moon
-	 * sphere // moonTG.addChild(moonROT); // earthROT.addChild(moonTG); //
-	 * rotationInterpolators[3] = Commons.rotationInterpolator(2500, moonROT, 'z',
-	 * new Point3d(moon)); // moonTG.addChild(rotationInterpolators[3]);
-	 * 
-	 * //return objTG; }
-	 */
-	public Runner(BranchGroup sceneBG) {
-		GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
-		Canvas3D canvas = new Canvas3D(config);
-		canvas.addKeyListener(this);
 
-		initialSound();
-		
-		SimpleUniverse su = new SimpleUniverse(canvas); // create a SimpleUniverse
-		Commons.define_Viewer(su, new Point3d(2, 1, 6));
-		su.getViewer().getView().setBackClipDistance(1000000.0);
-		sceneBG.addChild(Commons.key_Navigation(su)); // allow key navigation
-		sceneBG.compile(); // optimize the BranchGroup
-
-		su.addBranchGraph(sceneBG); // attach the scene to SimpleUniverse
-
-		viewtrans = su.getViewingPlatform().getViewPlatformTransform();
-		PlatformGeometry platformGeom = new PlatformGeometry();
-		platformGeom.addChild(Commons.key_Navigation(su));
-		su.getViewingPlatform().setPlatformGeometry(platformGeom);
-		setLayout(new BorderLayout());
-		add("Center", canvas);
-		frame.setSize(800, 800); // set the size of the JFrame
-		frame.setVisible(true);
-
-	}
+	
 
 	public static Background createBackground(String name) {
 		BoundingSphere hundredBS = new BoundingSphere(new Point3d(), 100.0);
@@ -309,111 +227,69 @@ public class Runner extends JPanel implements KeyListener {
 	}
 
 	public void keyTyped(KeyEvent e) {
-        
-    }
-
-    public void keyReleased(KeyEvent e) {
-    }
-
-    public void keyPressed(KeyEvent e) {
-        char key = e.getKeyChar();
-
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            t3dstep.set(new Vector3d(0.0, 1.0, 0.0));
-            tg.getTransform(t3d);
-            t3d.mul(t3dstep);
-            tg.setTransform(t3d);
-        }
-
-        if (key == 'a') {
-
-            t3dstep.rotZ(Math.PI / 32);
-            tg.getTransform(t3d);
-            t3d.get(matrix);
-            t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-            t3d.mul(t3dstep);
-            t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-            tg.setTransform(t3d);
-
-        }
-
-        if (key == 'd') {
-
-            t3dstep.rotZ(-Math.PI / 32);
-            tg.getTransform(t3d);
-            t3d.get(matrix);
-            t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-            t3d.mul(t3dstep);
-            t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-            tg.setTransform(t3d);
-
-        }
-
-        if (key == 'w') {
-
-            t3dstep.rotX(Math.PI / 32);
-            tg.getTransform(t3d);
-            t3d.get(matrix);
-            t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-            t3d.mul(t3dstep);
-            t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-            tg.setTransform(t3d);
-
-        }
-
-        if (key == 's') {
-
-            t3dstep.rotX(-Math.PI / 32);
-            tg.getTransform(t3d);
-            t3d.get(matrix);
-            t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-            t3d.mul(t3dstep);
-            t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-            tg.setTransform(t3d);
-
-        }
-
-    }
-
-	public static void main(String[] args) {
-		frame = new JFrame("Solar System");
-		frame.getContentPane().add(new Runner(create_Scene())); // create an instance of the class
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	/*
-	 * private static void createTickTock(TransformGroup sceneTG) { Vector3d[] pos =
-	 * { new Vector3d(-0.52, 0.0, 0.0), new Vector3d(0.52, 0.0, 0.0) }; for (int i =
-	 * 0; i < 2; i++) sceneTG.addChild(createColumn(0.12, pos[i]));
-	 * 
-	 * }
-	 * 
-	 * private static TransformGroup createColumn(double scale, Vector3d pos) {
-	 * Transform3D transM = new Transform3D(); transM.set(scale, pos); // Create
-	 * base TG with 'scale' and 'position' TransformGroup baseTG = new
-	 * TransformGroup(transM);
-	 * 
-	 * Sphere shape = new Sphere();
-	 * 
-	 * // Shape3D shape = new Sphere(0.5, 5.0, 1.0); baseTG.addChild(shape); //
-	 * Create a column as a box and add to 'baseTG'
-	 * 
-	 * Appearance app = shape.getAppearance(); ColoringAttributes ca = new
-	 * ColoringAttributes(); ca.setColor(0.6f, 0.3f, 0.0f); // set column's color
-	 * and make changeable
-	 * app.setCapability(Appearance.ALLOW_COLORING_ATTRIBUTES_WRITE);
-	 * app.setColoringAttributes(ca);
-	 * 
-	 * CollisionDetectShapes cd = new CollisionDetectShapes(shape);
-	 * cd.setSchedulingBounds(new BoundingSphere(pt_zero, 10d)); // detect column's
-	 * collision
-	 * 
-	 * baseTG.addChild(cd); // add column with behavior of CollisionDector return
-	 * baseTG; }
-	 */
+	public void keyReleased(KeyEvent e) {
+	}
+
+	public void keyPressed(KeyEvent e) {
+		char key = e.getKeyChar();
+
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			t3dstep.set(new Vector3d(0.0, 1.0, 0.0));
+			tg.getTransform(t3d);
+			t3d.mul(t3dstep);
+			tg.setTransform(t3d);
+		}
+
+		if (key == 'a') {
+			t3dstep.rotZ(Math.PI / 32);
+			tg.getTransform(t3d);
+			t3d.get(matrix);
+			t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+			t3d.mul(t3dstep);
+			t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+			tg.setTransform(t3d);
+
+		}
+
+		if (key == 'd') {
+			t3dstep.rotZ(-Math.PI / 32);
+			tg.getTransform(t3d);
+			t3d.get(matrix);
+			t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+			t3d.mul(t3dstep);
+			t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+			tg.setTransform(t3d);
+
+		}
+
+		if (key == 'w') {
+			t3dstep.rotX(Math.PI / 32);
+			tg.getTransform(t3d);
+			t3d.get(matrix);
+			t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+			t3d.mul(t3dstep);
+			t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+			tg.setTransform(t3d);
+
+		}
+
+		if (key == 's') {
+			t3dstep.rotX(-Math.PI / 32);
+			tg.getTransform(t3d);
+			t3d.get(matrix);
+			t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+			t3d.mul(t3dstep);
+			t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+			tg.setTransform(t3d);
+
+		}
+
+	}
+
 
 	private static BranchGroup createPenguin1() {
-
 		BranchGroup objRoot = new BranchGroup();
 
 		tg = new TransformGroup();
@@ -471,7 +347,6 @@ public class Runner extends JPanel implements KeyListener {
 		posit2.setSchedulingBounds(bounds);
 
 		tg_sh.addChild(posit2);
-		// tg_sh.addChild(createPenguinShadow());
 		tg_2.addChild(tg_sh);
 		tg.addChild(tg_2);
 
@@ -514,9 +389,9 @@ public class Runner extends JPanel implements KeyListener {
 		tg.setTransform(t3d);
 
 		FloatingBalls balls = new FloatingBalls();
-	   tg.addChild(balls.tg);
+		tg.addChild(balls.tg);
 
-	   tg.addChild(balls);
+		tg.addChild(balls);
 
 		objRoot.addChild(tg);
 		objRoot.compile();
@@ -534,8 +409,7 @@ public class Runner extends JPanel implements KeyListener {
 
 		float size = 0.042f;
 		TransparencyAttributes attr = new TransparencyAttributes(TransparencyAttributes.BLENDED, 0.0f);
-	     ap.setTransparencyAttributes(attr);
-		
+		ap.setTransparencyAttributes(attr);
 
 		// TextureLoader loader = new TextureLoader("Img/transparent.jpg", this);
 		ap.setTexture(texturedApp("Img/transparent.png"));
@@ -548,14 +422,18 @@ public class Runner extends JPanel implements KeyListener {
 		vertex[3] = new Point3f(size, -size, 0.0f);
 
 		QuadArray quadA = new QuadArray(vertex.length, GeometryArray.COORDINATES | GeometryArray.NORMALS);
-		
 
 		quadA.setCoordinates(0, vertex);
 		Shape3D quad3Dr = new Shape3D(quadA, ap);
 		Shape3D quad3Db = new Shape3D(quadA, ap);
 		Shape3D quad3DSun = new Shape3D(quadA, ap);
 		Shape3D quad3DEarth = new Shape3D(quadA, ap);
-		
+		Shape3D quad3Dmercury = new Shape3D(quadA, ap);
+		Shape3D quad3Dvenus = new Shape3D(quadA, ap);
+        Shape3D quad3DMars = new Shape3D(quadA, ap);
+        Shape3D quad3Djupiter = new Shape3D(quadA, ap);
+
+
 		if (num == 1) {
 			tg.addChild(quad3Dr);
 			quad3Dr.setUserData(new String("red"));
@@ -568,8 +446,24 @@ public class Runner extends JPanel implements KeyListener {
 		} else if (num == 4) {
 			tg.addChild(quad3DEarth);
 			quad3DEarth.setUserData(new String("earth"));
-		}
-		
+		} else if (num == 5) {
+			tg.addChild(quad3Dmercury);
+			quad3Dmercury.setUserData(new String("mercury"));
+		}else if (num == 6) {
+            tg.addChild(quad3Dvenus);
+            quad3Dvenus.setUserData(new String("venus"));
+        }
+        else if(num == 7){
+            tg.addChild(quad3DMars);
+            quad3DMars.setUserData(new String("mars"));
+        }
+        else if(num == 8){
+            tg.addChild(quad3Djupiter);
+            quad3Djupiter.setUserData(new String("jupiter"));
+        }
+
+
+
 		root.addChild(tg);
 
 		root.compile();
@@ -644,7 +538,7 @@ public class Runner extends JPanel implements KeyListener {
 
 			tg_2_r.addChild(createShape3D(1));
 			rball.setCollidable(false);
-			tg_2_r.addChild(rball);
+			// tg_2_r.addChild(rball);
 
 			Appearance ap_blue = createAppearance(new Color3f(0.0f, 0.0f, 1.0f));
 			Sphere bball = new Sphere(0.05f, ap_blue);
@@ -655,71 +549,195 @@ public class Runner extends JPanel implements KeyListener {
 
 			tg_2_b.addChild(createShape3D(2));
 			bball.setCollidable(false);
-			tg_2_b.addChild(bball);
+			// tg_2_b.addChild(bball);
 
-			
 
-			
-			
 			Appearance ap_sun = new Appearance();
-			
+
+
 			ap_sun.setTexture(texturedApp("img/Sun.jpg"));
 			PolygonAttributes polyAttrib = new PolygonAttributes();
 			ap_sun.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
 			ap_sun.setCapability(Appearance.ALLOW_POLYGON_ATTRIBUTES_WRITE);
 			polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
-	        ap_sun.setPolygonAttributes(polyAttrib);
+			ap_sun.setPolygonAttributes(polyAttrib);
 			Transform3D sc1 = new Transform3D();
-	        sc1.setScale(1.4f);
-	        
-	        TransformGroup sunTG = new TransformGroup(sc1);
-	        sunTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-	        int primflags = Sphere.GENERATE_NORMALS + Primitive.GENERATE_TEXTURE_COORDS + Primitive.ENABLE_APPEARANCE_MODIFY;
-	        sun = new Sphere(0.05f, primflags, ap_sun);
+			sc1.setScale(1.4f);
 
-	        rotate1 = Commons.rotationInterpolator(10000, sunTG, 'y', new Point3d(0, 0, 0));
+			TransformGroup sunTG = new TransformGroup(sc1);
+			sunTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+			int primflags = Sphere.GENERATE_NORMALS + Primitive.GENERATE_TEXTURE_COORDS
+					+ Primitive.ENABLE_APPEARANCE_MODIFY;
+			planets[0] = new Sphere(0.05f, primflags, ap_sun);
+
+			rotate1 = Commons.rotationInterpolator(10000, sunTG, 'y', new Point3d(0, 0, 0));
+			rotate1 = Commons.rotationInterpolator(10000, sunTG, 'y', new Point3d(0, 0, 0));
 
 			sunTG.addChild(createShape3D(3));
-			sun.setCollidable(false);
-			sunTG.addChild(sun);
+			planets[0].setCollidable(false);
+			sunTG.addChild(planets[0]);
 			sunTG.addChild(rotate1);
+
 			
-			
-			
-			
+			// earth
 			Appearance ap_earth = new Appearance();
 			transAttr_earth = new TransparencyAttributes();
 			transAttr_earth.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+			ap_earth.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
+			ap_earth.setCapability(Appearance.ALLOW_POLYGON_ATTRIBUTES_WRITE);
+
 			ap_earth.setTexture(texturedApp("img/Earth.jpg"));
 			polyAttrib = new PolygonAttributes();
-	        polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
-	        ap_earth.setPolygonAttributes(polyAttrib);
-	        Transform3D sc2 = new Transform3D();
-	        Vector3f trans1 = new Vector3f(0.1f, 0, 0.1f);
-	        sc2.setTranslation(trans1);
-	        sc2.setScale(1.5f);
-	        
-	        
-	        TransformGroup earthTG = new TransformGroup(sc2);
-	        earthTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-	        Sphere earth = new Sphere(0.05f, primflags, ap_earth);
-	        TransformGroup earthTG_ROT = new TransformGroup();
-	        earthTG_ROT.addChild(earth);//earth sphere
-	        earthTG.addChild(earthTG_ROT);
-	        sunTG.addChild(earthTG);
-	        rotate2 = Commons.rotationInterpolator(5000, earthTG_ROT, 'x', new Point3d(trans1));
-	                
+			polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+			ap_earth.setPolygonAttributes(polyAttrib);
+			Transform3D sc2 = new Transform3D();
+			Vector3f trans1 = new Vector3f(0.1f, 0, 0.1f);
+			sc2.setTranslation(trans1);
+			sc2.setScale(1.5f);
 
-	        earthTG_ROT.addChild(createShape3D(4));
-	        earth.setCollidable(false);
-	        earthTG.addChild(rotate2);	
+			TransformGroup earthTG = new TransformGroup(sc2);
+			earthTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+			planets[1] = new Sphere(0.05f, primflags, ap_earth);
+			TransformGroup earthTG_ROT = new TransformGroup();
+			earthTG_ROT.addChild(planets[1]);// earth sphere
+			earthTG.addChild(earthTG_ROT);
+			sunTG.addChild(earthTG);
+			rotate2 = Commons.rotationInterpolator(5000, earthTG_ROT, 'x', new Point3d(trans1));
+
+			earthTG_ROT.addChild(createShape3D(4));
+			planets[1].setCollidable(false);
+			earthTG.addChild(rotate2);
+
 			
-			//tg.addChild(earthTG);
+			//mercury
+			Appearance ap_mercury = new Appearance();
+			transAttr_mercury = new TransparencyAttributes();
+			transAttr_mercury.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+			ap_mercury.setTexture(texturedApp("img/Mercury.jpg"));
+			polyAttrib = new PolygonAttributes();
+			polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+			ap_mercury.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
+
+			ap_mercury.setCapability(Appearance.ALLOW_POLYGON_ATTRIBUTES_WRITE);
+
+			ap_mercury.setPolygonAttributes(polyAttrib);
+			Transform3D sc3 = new Transform3D();
+			Vector3f trans2 = new Vector3f(0.1f, 0, 0.3f);
+			sc3.setTranslation(trans2);
+			sc3.setScale(1.5f);
+			
+			TransformGroup mercuryTG = new TransformGroup(sc3);
+			mercuryTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+			planets[2] = new Sphere(0.05f, primflags, ap_mercury);
+			TransformGroup mercuryTG_ROT = new TransformGroup();
+			mercuryTG_ROT.addChild(planets[2]);// earth sphere
+			mercuryTG.addChild(mercuryTG_ROT);
+			sunTG.addChild(mercuryTG);
+			rotate3 = Commons.rotationInterpolator(400, mercuryTG_ROT, 'x', new Point3d(trans2));
+
+			mercuryTG_ROT.addChild(createShape3D(5));
+			planets[2].setCollidable(false);
+			mercuryTG.addChild(rotate3);
+			
+			//venus
+			Appearance ap_venus = new Appearance();
+			transAttr_venus = new TransparencyAttributes();
+			transAttr_venus.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+			ap_venus.setTexture(texturedApp("img/Venus.jpg"));
+			polyAttrib = new PolygonAttributes();
+			polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+			ap_venus.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
+
+			ap_venus.setCapability(Appearance.ALLOW_POLYGON_ATTRIBUTES_WRITE);
+
+			ap_venus.setPolygonAttributes(polyAttrib);
+			Transform3D sc4 = new Transform3D();
+			Vector3f trans3 = new Vector3f(0.1f, 0, 0.3f);
+			sc4.setTranslation(trans3);
+			sc3.setScale(1.3f);
+
+			TransformGroup venusTG = new TransformGroup(sc4);
+			venusTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+			planets[3] = new Sphere(0.05f, primflags, ap_venus);
+			TransformGroup venusTG_ROT = new TransformGroup();
+			venusTG_ROT.addChild(planets[3]);// earth sphere
+			venusTG.addChild(venusTG_ROT);
+			sunTG.addChild(venusTG);
+			rotate4 = Commons.rotationInterpolator(300, venusTG_ROT, 'x', new Point3d(trans3));
+
+			venusTG_ROT.addChild(createShape3D(6));
+			planets[3].setCollidable(false);
+			venusTG.addChild(rotate4);
+
+			
+			//Mars
+			Appearance ap_mars = new Appearance();
+			transAttr_mars = new TransparencyAttributes();
+			transAttr_mars.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+			ap_mars.setTexture(texturedApp("img/Mars.jpg"));
+			polyAttrib = new PolygonAttributes();
+			polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+			ap_mars.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
+
+			ap_mars.setCapability(Appearance.ALLOW_POLYGON_ATTRIBUTES_WRITE);
+
+			ap_mars.setPolygonAttributes(polyAttrib);
+			Transform3D sc5 = new Transform3D();
+			Vector3f trans4 = new Vector3f(0.1f, 0, 0.5f);
+			sc5.setTranslation(trans4);
+			sc5.setScale(1f);
+
+			TransformGroup marsTG = new TransformGroup(sc5);
+			marsTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+			planets[4] = new Sphere(0.05f, primflags, ap_mars);
+			TransformGroup marsTG_ROT = new TransformGroup();
+			marsTG_ROT.addChild(planets[4]);// earth sphere
+			marsTG.addChild(marsTG_ROT);
+			sunTG.addChild(marsTG);
+			rotate5 = Commons.rotationInterpolator(200, marsTG_ROT, 'x', new Point3d(trans4));
+
+			marsTG_ROT.addChild(createShape3D(7));
+			planets[4].setCollidable(false);
+			marsTG.addChild(rotate5);
+
+
+            //Jupiter
+			Appearance ap_jupiter = new Appearance();
+			transAttr_jupiter = new TransparencyAttributes();
+			transAttr_jupiter.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+			ap_jupiter.setTexture(texturedApp("img/Jupiter.jpg"));
+			polyAttrib = new PolygonAttributes();
+			polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+			ap_jupiter.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
+
+			ap_jupiter.setCapability(Appearance.ALLOW_POLYGON_ATTRIBUTES_WRITE);
+
+			ap_jupiter.setPolygonAttributes(polyAttrib);
+			Transform3D sc6 = new Transform3D();
+			Vector3f trans5 = new Vector3f(0.1f, 0, 0.7f);
+			sc6.setTranslation(trans5);
+			sc6.setScale(2.5f);
+			
+			TransformGroup jupiterTG = new TransformGroup(sc6);
+			jupiterTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+			planets[5] = new Sphere(0.05f, primflags, ap_jupiter);
+			TransformGroup jupiterTG_ROT = new TransformGroup();
+			jupiterTG_ROT.addChild(planets[5]);// earth sphere
+			jupiterTG.addChild(jupiterTG_ROT);
+			sunTG.addChild(jupiterTG);
+			rotate6 = Commons.rotationInterpolator(100, jupiterTG_ROT, 'y', new Point3d(trans5));
+
+			jupiterTG_ROT.addChild(createShape3D(8));
+			planets[5].setCollidable(false);
+			jupiterTG.addChild(rotate6);
+
+			
+			// tg.addChild(earthTG);
 			tg.addChild(sunTG);
-			tg.addChild(tg_2_r);
-			tg.addChild(tg_2_b);
-			
-			
+			// tg.addChild(tg_2_r);
+			// tg.addChild(tg_2_b);
+
+
 			BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 10000.0);
 			this.setSchedulingBounds(bounds);
 
@@ -739,11 +757,12 @@ public class Runner extends JPanel implements KeyListener {
 		@Override
 		public void processStimulus(Iterator<WakeupCriterion> arg0) {
 			// TODO Auto-generated method stub
-			if (!done) {
-				if (collision_r && collision_b && collision_sun && collision_earth) {
+			
+				if (collision_mercury && collision_sun && collision_earth && collision_venus && collision_mars) {
 					end = System.currentTimeMillis();
 					elapsed = end - start - delay;
 					done = true;
+					thisFBF.gameWon(pid);
 				} else {
 					current = System.currentTimeMillis();
 					if (firstTime) {
@@ -753,44 +772,45 @@ public class Runner extends JPanel implements KeyListener {
 					elapsed = current - start - delay;
 					// System.out.println("elapsed: "+elapsed);
 				}
-			}
+			
 
 			if (!done) {
 				min = (int) Math.floor(elapsed / 60000);
 				sec = (int) Math.floor(elapsed % 60000 / 1000);
 
 				if (min >= 2) {
-					//System.out.println("GAME OVER");
+					// System.out.println("GAME OVER");
+					// System.out.println("GAME OVER");
 					text2d.setString("GAME OVER");
 					text2d_2.setString("");
 
 				} else if ((min * 60 + sec) >= 70) {
 					str_min = String.valueOf(min);
 					str_sec = String.valueOf(sec);
-					//System.out.println("0" + str_min + ":" + str_sec);
+					// System.out.println("0" + str_min + ":" + str_sec);
 					text2d_2.setString("0" + str_min + ":" + str_sec);
 
 				} else if ((min * 60 + sec) >= 60) {
 					str_min = String.valueOf(min);
 					str_sec = String.valueOf(sec);
 					text2d_2.setString("0" + str_min + ":0" + str_sec);
-					//System.out.println("0" + str_min + ":0" + str_sec);
+					// System.out.println("0" + str_min + ":0" + str_sec);
 
 				} else if (sec >= 10) {
 					str_sec = String.valueOf(sec);
 					text2d_2.setString("00:" + str_sec);
-					//System.out.println("00:" + str_min + ":0" + str_sec);
+					// System.out.println("00:" + str_min + ":0" + str_sec);
 				} else {
 					str_sec = String.valueOf(sec);
-					//System.out.println("00:" + "0" + str_sec);
+					// System.out.println("00:" + "0" + str_sec);
 					text2d_2.setString("00:" + "0" + str_sec);
 				}
 			}
 
 			wakeupOn(wakeFrame);
 		}
-		
-		
+
+
 	}
 
 	/* for A5: a function to initialize for playing sound */
@@ -814,7 +834,8 @@ public class Runner extends JPanel implements KeyListener {
 		}
 		soundJOAL.stop(snd_pt);
 	}
-	
+
+
 	public static Texture texturedApp(String name) {
 		String filename = name;
 		TextureLoader loader = new TextureLoader(filename, null);

@@ -70,50 +70,67 @@ public class CollisionDetectShapes extends Behavior {
 			theLeaf = ((WakeupOnCollisionMovement) theCriterion).getTriggeringPath().getObject();
 
 		}
-		System.out.println("processStimulus Iterator");
 		inCollision = !inCollision;
 		if (inCollision) {
-
-			// clip1 = getSound("sound/bell03.wav");
-			Runner.playSound(2);
-			// clip1.setFramePosition(0);
-			// clip1.start();
-
+			
 			wakeupOn(theCriteria[1]);
-
-			if ((theLeaf.getUserData()).equals("red")) {
-				System.out.println("colliding with a red ball");
-
-				Runner.transAttr_r.setTransparency(0.8f);
-				Runner.collision_r = true;
-			}
-
-			if ((theLeaf.getUserData()).equals("blue")) {
-				System.out.println("colliding with a blue ball");
-
-				Runner.transAttr_b.setTransparency(0.8f);
-				Runner.collision_b = true;
-			}
 
 			if ((theLeaf.getUserData()).equals("sun") && !Runner.collision_sun) {
 				System.out.println("colliding with Sun ball");
-
+				Runner.playSound(2);
 				Runner.collision_sun = true;
-				Appearance app = Runner.sun.getAppearance();
+				Appearance app = Runner.planets[0].getAppearance();
 				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
-				Runner.sun.setAppearance(app);
+				Runner.planets[0].setAppearance(app);
 			}
 			
 			if ((theLeaf.getUserData()).equals("earth") && !Runner.collision_earth) {
 				System.out.println("colliding with earth ball");
-
-				Runner.transAttr_earth.setTransparency(0.8f);
+				Runner.playSound(2);
 				Runner.collision_earth = true;
-				Appearance app = Runner.sun.getAppearance();
+				Appearance app = Runner.planets[1].getAppearance();
 				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
-				Runner.sun.setAppearance(app);
+				Runner.planets[1].setAppearance(app);
 				Runner.rotate2.getAlpha().pause();
 			}
+			
+			if ((theLeaf.getUserData()).equals("mercury") && !Runner.collision_mercury) {
+				System.out.println("colliding with mercury ball");
+				Runner.playSound(2);
+				Runner.collision_mercury = true;
+				Appearance app = Runner.planets[2].getAppearance();
+				app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
+				Runner.planets[2].setAppearance(app);
+				Runner.rotate3.getAlpha().pause();
+			}
+			if((theLeaf.getUserData()).equals("venus") && !Runner.collision_venus) {
+                System.out.println("colliding with venus ball");
+                Runner.playSound(2);
+                Runner.collision_venus = true;
+                Appearance app = Runner.planets[3].getAppearance();
+                app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
+                Runner.planets[3].setAppearance(app);
+                Runner.rotate4.getAlpha().pause();
+            }
+            if((theLeaf.getUserData()).equals("mars") && !Runner.collision_mars) {
+                System.out.println("colliding with mars ball");
+                Runner.playSound(2);
+                Runner.collision_mars = true;
+                Appearance app = Runner.planets[4].getAppearance();
+                app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
+                Runner.planets[4].setAppearance(app);
+                Runner.rotate5.getAlpha().pause();
+            }
+            if((theLeaf.getUserData()).equals("jupiter") && !Runner.collision_jupiter) {
+                System.out.println("colliding with jupiter ball");
+                Runner.playSound(2);
+                Runner.collision_jupiter = true;
+                Appearance app = Runner.planets[5].getAppearance();
+                app.setTexture(Runner.texturedApp("img/MarbleTexture.jpg"));
+                Runner.planets[5].setAppearance(app);
+                Runner.rotate6.getAlpha().pause();
+            }
+
 		} else {
 			wakeupOn(theCriteria[0]);
 		}

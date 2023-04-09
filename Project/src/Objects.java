@@ -18,6 +18,10 @@ public abstract class Objects {
 	protected Vector3f post; // use 'post' to specify location
 	public Shape3D obj_shape;
 
+	public Node getShape3D() {
+		return obj_shape;
+	}
+	
 	public abstract TransformGroup position_Object(); // need to be defined in derived classes
 
 	public abstract void add_Child(TransformGroup nextTG);
@@ -69,7 +73,7 @@ public abstract class Objects {
 		objBG = loadShape("sphere").getSceneGroup(); // load external object to 'objBG'
 		obj_shape = (Shape3D) objBG.getChild(0); // get and cast the object to 'obj_shape'
 		obj_shape.setName(obj_name); // use the name to identify the object
-
+		obj_shape.setCollidable(false);
 	}
 	
 
@@ -97,9 +101,9 @@ public abstract class Objects {
 	}
 }
 
-class Sphere extends Objects {
+class MySphere extends Objects {
 
-	public Sphere(String name) {
+	public MySphere(String name) {
 		scale = 1d;
 		post = new Vector3f(0f, 0f, 0f);
 		transform_Object(name);
@@ -109,12 +113,7 @@ class Sphere extends Objects {
 		Appearance sphereAppearance = new Appearance();// appearance for sphere
 		// setup appearance attributes
 		
-
-		
-		
 		sphereAppearance.setTexture(texturedApp("img/" + name + ".jpg"));// default image as MarbleTexture
-		
-		
 		
 		PolygonAttributes polyAttrib = new PolygonAttributes();
         polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
@@ -124,6 +123,29 @@ class Sphere extends Objects {
 		System.out.println("img/" + name + ".jpg");
 		//System.out.println(polygonAttributes);
 		obj_shape.setAppearance(sphereAppearance);
+	}
+	
+	public MySphere(String name, Appearance sphereAppearance) {
+		scale = 1d;
+		post = new Vector3f(0f, 0f, 0f);
+		transform_Object(name);
+		// mtl_clr[1] = new Color3f(Commons.Yellow);
+		// obj_Appearance();
+
+		// Appearance sphereAppearance = new Appearance();// appearance for sphere
+		// setup appearance attributes
+		
+		sphereAppearance.setTexture(texturedApp("img/" + name + ".jpg"));// default image as MarbleTexture
+		
+		PolygonAttributes polyAttrib = new PolygonAttributes();
+        polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
+        sphereAppearance.setPolygonAttributes(polyAttrib);
+        
+        
+		System.out.println("img/" + name + ".jpg");
+		//System.out.println(polygonAttributes);
+		obj_shape.setAppearance(sphereAppearance);
+		obj_shape.setCollidable(false);
 	}
 
 	/*
@@ -142,6 +164,10 @@ class Sphere extends Objects {
 
 	public void add_Child(TransformGroup nextTG) {
 		objRG.addChild(nextTG);
+	}
+	
+	public Node getShape3D() {
+		return obj_shape;
 	}
 }
 
